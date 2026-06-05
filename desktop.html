@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>K-Insurance — Gopang AI 보험 v2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+:root{
+  --bg:#f8f9fa;--sur:#fff;
+  --bd:rgba(0,0,0,.1);--bd2:rgba(0,0,0,.18);
+  --t1:#1c1c1e;--t2:#4a4a55;--t3:#9898a6;
+  --brand:#3ecf8e;--brand-bg:rgba(62,207,142,.08);--brand-bd:rgba(62,207,142,.25);
+  --font:'Noto Sans KR',-apple-system,sans-serif;
+  --r:6px;--r2:10px;
+}
+@media(prefers-color-scheme:dark){
+  :root{--bg:#0f0f0f;--sur:#1c1c1e;--bd:rgba(255,255,255,.1);--bd2:rgba(255,255,255,.2);--t1:#f5f5f7;--t2:#a1a1aa;--t3:#52525b}
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);font-size:14px;color:var(--t1);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.6}
+a{text-decoration:none;color:inherit}
+.ti{line-height:1}
+
+/* NAV */
+.nav{background:var(--sur);border-bottom:.5px solid var(--bd);position:sticky;top:0;z-index:100}
+.nav-inner{max-width:1080px;margin:0 auto;padding:0 24px;height:56px;display:flex;align-items:center;gap:32px}
+.logo{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:500;color:var(--t1)}
+.logo-mark{width:28px;height:28px;background:var(--brand);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:500}
+.nav-links{display:flex;gap:0;flex:1}
+.nav-links a{padding:6px 12px;border-radius:var(--r);font-size:13px;color:var(--t2);transition:color .12s,background .12s}
+.nav-links a:hover{color:var(--t1);background:rgba(0,0,0,.04)}
+@media(prefers-color-scheme:dark){.nav-links a:hover{background:rgba(255,255,255,.06)}}
+.nav-right{display:flex;gap:8px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:var(--r);font-size:13px;font-weight:500;font-family:var(--font);cursor:pointer;border:.5px solid var(--bd2);background:var(--sur);color:var(--t1);transition:all .12s;text-decoration:none}
+.btn:hover{background:var(--bg)}
+.btn-brand{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn-brand:hover{background:#2db87a;border-color:#2db87a}
+
+/* HERO */
+.hero{max-width:1080px;margin:0 auto;padding:80px 24px 64px;text-align:center}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;border:.5px solid var(--brand-bd);background:var(--brand-bg);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--brand);margin-bottom:24px}
+.pulse{width:6px;height:6px;border-radius:50%;background:var(--brand);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-size:40px;font-weight:500;letter-spacing:-.5px;line-height:1.5;color:var(--t1);margin-bottom:16px}
+.hero-sub{font-size:16px;color:var(--t2);max-width:720px;margin:0 auto 32px;line-height:1.6}
+.hero-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:48px}
+.hero-actions .btn{padding:9px 20px;font-size:14px}
+
+/* STAT STRIP */
+.stat-strip{border:.5px solid var(--bd);border-radius:var(--r2);background:var(--sur);display:grid;grid-template-columns:repeat(4,1fr);max-width:700px;margin:0 auto 72px;overflow:hidden}
+.stat{padding:20px 24px;border-right:.5px solid var(--bd)}
+.stat:last-child{border-right:none}
+.stat-val{font-size:22px;font-weight:500;color:var(--t1);margin-bottom:3px}
+.stat-val em{color:var(--brand);font-style:normal}
+.stat-lbl{font-size:12px;color:var(--t3)}
+
+/* SECTION */
+.container{max-width:1080px;margin:0 auto;padding:0 24px}
+.section{padding:64px 0}
+.section-hd{margin-bottom:40px}
+.section-hd h2{font-size:22px;font-weight:500;color:var(--t1);margin-bottom:8px}
+.section-hd p{font-size:14px;color:var(--t2);max-width:440px}
+.divider{border:none;border-top:.5px solid var(--bd);margin:0}
+
+/* FEATURE GRID */
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bd);border:.5px solid var(--bd);border-radius:var(--r2);overflow:hidden}
+@media(max-width:720px){.feature-grid{grid-template-columns:1fr}}
+.feature-cell{background:var(--sur);padding:24px}
+.feature-icon{width:36px;height:36px;border:.5px solid var(--bd);border-radius:var(--r);display:flex;align-items:center;justify-content:center;color:var(--t2);margin-bottom:16px;font-size:18px}
+.feature-title{font-size:14px;font-weight:500;color:var(--t1);margin-bottom:6px}
+.feature-desc{font-size:13px;color:var(--t2);line-height:1.55}
+.feature-badge{display:inline-block;margin-top:10px;font-size:11px;padding:2px 8px;border-radius:20px;border:.5px solid var(--brand-bd);color:var(--brand);background:var(--brand-bg)}
+
+/* PRODUCT TABLE */
+.product-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:640px){.product-grid{grid-template-columns:1fr}}
+.panel{background:var(--sur);border:.5px solid var(--bd);border-radius:var(--r2);overflow:hidden}
+.panel-hd{padding:14px 18px;border-bottom:.5px solid var(--bd);font-size:13px;font-weight:500;color:var(--t1);display:flex;align-items:center;gap:8px}
+.panel-hd .ti{font-size:16px;color:var(--t3)}
+table.rt{width:100%;border-collapse:collapse}
+table.rt tr{border-bottom:.5px solid var(--bd)}
+table.rt tr:last-child{border-bottom:none}
+table.rt td{padding:10px 18px;font-size:13px;color:var(--t2)}
+table.rt td:last-child{text-align:right;color:var(--t1);font-variant-numeric:tabular-nums}
+table.rt td.grn{color:var(--brand)!important}
+.grade-chip{display:inline-flex;align-items:center;justify-content:center;width:36px;height:18px;border-radius:3px;font-size:11px;font-weight:500;border:.5px solid;line-height:1}
+.g-AAA{color:#1B6B3A;background:#E6F4EC;border-color:#A3D9B8}
+.g-AA{color:#0047AB;background:#E8F0FE;border-color:#93C4F7}
+.g-A{color:#0369A1;background:#E0F2FE;border-color:#93C9F7}
+.g-BBB{color:#92400E;background:#FEF9E7;border-color:#FCD34D}
+.g-BB{color:#C05621;background:#FEF3E2;border-color:#FCA47A}
+.g-C{color:#9B1C1C;background:#FEE2E2;border-color:#FCA5A5}
+
+/* CLAIM FLOW */
+.flow-row{display:flex;align-items:flex-start;gap:0}
+.flow-step{flex:1;padding:20px 16px;border-right:.5px solid var(--bd);position:relative}
+.flow-step:last-child{border-right:none}
+.flow-num{width:24px;height:24px;border:.5px solid var(--bd);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--t3);margin-bottom:10px}
+.flow-title{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:4px}
+.flow-desc{font-size:12px;color:var(--t3);line-height:1.5}
+
+/* AUTO TRIGGER */
+.trigger-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(max-width:640px){.trigger-grid{grid-template-columns:1fr}}
+.trigger-card{background:var(--sur);border:.5px solid var(--bd);border-radius:var(--r2);padding:20px}
+.trigger-card h4{font-size:14px;font-weight:500;color:var(--t1);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.trigger-card p{font-size:13px;color:var(--t2);line-height:1.55;margin-bottom:10px}
+.trigger-premium{font-size:12px;color:var(--brand);font-weight:500}
+
+/* PDV DATA SECTION */
+.pdv-section{background:var(--sur);border:.5px solid var(--bd);border-radius:var(--r2);overflow:hidden;margin-bottom:16px}
+.pdv-hd{padding:18px 24px;border-bottom:.5px solid var(--bd);display:flex;align-items:center;gap:12px}
+.pdv-hd-icon{width:36px;height:36px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pdv-hd-icon.pdv{background:rgba(62,207,142,.1);color:var(--brand)}
+.pdv-hd-icon.traffic{background:rgba(59,130,246,.1);color:#3b82f6}
+.pdv-hd-icon.health{background:rgba(239,68,68,.1);color:#ef4444}
+.pdv-hd-text h4{font-size:14px;font-weight:500;color:var(--t1);margin-bottom:2px}
+.pdv-hd-text p{font-size:12px;color:var(--t3);line-height:1.4}
+.pdv-body{padding:16px 24px}
+.pdv-items{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:640px){.pdv-items{grid-template-columns:1fr}}
+.pdv-item{display:flex;align-items:flex-start;gap:8px;padding:8px 10px;border:.5px solid var(--bd);border-radius:var(--r);background:var(--bg)}
+.pdv-item-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.dot-pdv{background:var(--brand)}
+.dot-traffic{background:#3b82f6}
+.dot-health{background:#ef4444}
+.pdv-item-text{font-size:12px;color:var(--t2);line-height:1.5}
+.pdv-item-text strong{display:block;font-size:11px;font-weight:500;color:var(--t1);margin-bottom:1px}
+.pdv-coeff{display:inline-block;font-size:11px;padding:1px 6px;border-radius:3px;font-weight:500;margin-top:3px}
+.coeff-up{background:#fee2e2;color:#9b1c1c;border:.5px solid #fca5a5}
+.coeff-dn{background:#e6f4ec;color:#1b6b3a;border:.5px solid #a3d9b8}
+.coeff-neu{background:var(--sur);color:var(--t3);border:.5px solid var(--bd)}
+.openhash-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(62,207,142,.08);border:.5px solid var(--brand-bd);color:var(--brand);font-weight:500}
+
+/* ACCESS */
+.access-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:640px){.access-grid{grid-template-columns:1fr}}
+.access-card{background:var(--sur);border:.5px solid var(--bd);border-radius:var(--r2);padding:24px}
+.access-card h3{font-size:15px;font-weight:500;color:var(--t1);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.access-card h3 .ti{font-size:18px;color:var(--t3)}
+.access-card p{font-size:13px;color:var(--t2);margin-bottom:16px;line-height:1.55}
+.access-list{list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:20px}
+.access-list li{font-size:13px;color:var(--t2);display:flex;align-items:center;gap:7px}
+.access-list li .ti{font-size:14px;color:var(--t3)}
+
+/* FOOTER */
+.footer{border-top:.5px solid var(--bd);background:var(--sur);padding:40px 0 24px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px;margin-bottom:32px}
+@media(max-width:720px){.footer-grid{grid-template-columns:1fr 1fr}}
+.footer-brand{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.footer-desc{font-size:12px;color:var(--t3);line-height:1.6}
+.footer-col-title{font-size:11px;font-weight:500;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px}
+.footer-links{list-style:none}
+.footer-links li a{display:block;font-size:13px;color:var(--t2);padding:3px 0;transition:color .12s}
+.footer-links li a:hover{color:var(--t1)}
+.footer-bottom{border-top:.5px solid var(--bd);padding-top:16px;font-size:12px;color:var(--t3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
+
+/* FLOAT */
+.float{position:fixed;bottom:24px;right:24px;z-index:99;display:flex;flex-direction:column;align-items:center;gap:5px}
+.float-btn{width:48px;height:48px;border-radius:50%;background:var(--brand);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;box-shadow:0 2px 8px rgba(62,207,142,.35);transition:transform .15s}
+.float-btn:hover{transform:scale(1.06)}
+.float-label{font-size:10px;color:var(--t3);white-space:nowrap}
+
+/* TEXT HELPERS */
+.features-desc{font-size:14px;color:var(--t2);line-height:2;width:100%;margin-bottom:16px}
+.features-closing{font-size:16px;font-weight:500;color:var(--t1);line-height:1.7;margin-bottom:32px;width:100%}
+.rates-desc{font-size:14px;color:var(--t2);line-height:2;width:100%;margin-bottom:12px}
+.rates-closing{font-size:16px;font-weight:500;color:var(--t1);line-height:1.8;margin:24px 0 32px;width:100%}
+.features-desc a,.rates-closing a{color:var(--brand);text-decoration:underline;text-underline-offset:2px;font-weight:500}
+.features-desc a:hover,.rates-closing a:hover{opacity:.8}
+.fd-bullet{color:var(--brand);font-size:10px;margin-right:4px;vertical-align:middle}
+
+/* AI 채팅 모달 */
+.chat-modal-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.35);z-index:300;
+  align-items:flex-end;justify-content:flex-end;
+  padding:84px 24px 24px;
+}
+.chat-modal-overlay.open{display:flex}
+.chat-modal{width:380px;height:560px;background:var(--sur);border:.5px solid var(--bd);border-radius:14px;box-shadow:0 8px 40px rgba(0,0,0,.18);display:flex;flex-direction:column;overflow:hidden}
+@media(max-width:460px){.chat-modal{width:calc(100vw - 32px);height:70dvh}}
+.chat-modal-hd{padding:14px 16px;border-bottom:.5px solid var(--bd);display:flex;align-items:center;gap:10px;flex-shrink:0}
+.chat-modal-hd .chat-logo{width:28px;height:28px;background:var(--brand);border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0}
+.chat-modal-hd .chat-title{flex:1;font-size:13px;font-weight:500;color:var(--t1)}
+.chat-modal-hd .chat-subtitle{font-size:11px;color:var(--t3)}
+.chat-close-btn{background:none;border:none;cursor:pointer;color:var(--t3);font-size:18px;line-height:1;padding:4px;border-radius:4px;transition:color .12s,background .12s}
+.chat-close-btn:hover{color:var(--t1);background:var(--bg)}
+.chat-messages{flex:1;overflow-y:auto;padding:14px 14px 8px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth}
+.chat-msg{max-width:88%;font-size:13px;line-height:1.55;padding:9px 12px;border-radius:10px}
+.chat-msg.ai{align-self:flex-start;background:var(--bg);border:.5px solid var(--bd);color:var(--t1);border-bottom-left-radius:3px}
+.chat-msg.user{align-self:flex-end;background:var(--brand);color:#fff;border-bottom-right-radius:3px}
+.chat-msg.typing{color:var(--t3);font-style:italic}
+.chat-input-row{padding:10px 12px;border-top:.5px solid var(--bd);display:flex;gap:8px;align-items:flex-end;flex-shrink:0}
+.chat-input{flex:1;resize:none;border:.5px solid var(--bd2);border-radius:8px;padding:8px 10px;font-size:13px;font-family:var(--font);color:var(--t1);background:var(--bg);line-height:1.45;max-height:100px;outline:none;transition:border-color .12s}
+.chat-input:focus{border-color:var(--brand)}
+.chat-send-btn{width:36px;height:36px;flex-shrink:0;background:var(--brand);border:none;border-radius:8px;cursor:pointer;color:#fff;display:flex;align-items:center;justify-content:center;transition:background .12s,transform .1s}
+.chat-send-btn:hover{background:#2db87a}
+.chat-send-btn:active{transform:scale(.95)}
+.chat-send-btn:disabled{background:var(--bd2);cursor:not-allowed}
+.chat-powered{text-align:center;font-size:10px;color:var(--t3);padding:4px 0 8px;flex-shrink:0}
+
+/* BANNER */
+.banner{background:var(--brand);color:#fff;text-align:center;padding:9px 48px;font-size:13px;line-height:1.5;position:relative;z-index:110}
+.banner a{color:#fff;text-decoration:underline;text-underline-offset:2px;opacity:.85}
+.banner a:hover{opacity:1}
+.banner-close{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#fff;opacity:.7;font-size:16px;line-height:1;padding:4px}
+.banner-close:hover{opacity:1}
+.nav-links-desktop{display:flex}
+@media(max-width:720px){.nav-links-desktop{display:none}.hero h1{font-size:28px}.stat-strip{grid-template-columns:1fr 1fr}.section{padding:40px 0}}
+
+/* SIDEBAR */
+:root{
+  --sb-w-collapsed:48px;
+  --sb-w-expanded:220px;
+  --sb-bg:#ffffff;
+  --sb-hover:rgba(0,0,0,.05);
+  --sb-active:rgba(62,207,142,.10);
+  --sb-text:#4a4a55;
+  --sb-text-dim:#9898a6;
+  --sb-sep:rgba(0,0,0,.08);
+  --sb-brand:#3ECF8E;
+  --sb-trans:width 220ms cubic-bezier(.4,0,.2,1),box-shadow 220ms cubic-bezier(.4,0,.2,1);
+}
+@media(prefers-color-scheme:dark){
+  :root{--sb-bg:#1c1c1e;--sb-hover:rgba(255,255,255,.06);--sb-text:#a1a1aa;--sb-text-dim:#52525b;--sb-sep:rgba(255,255,255,.08)}
+}
+body.has-sidebar{padding-left:var(--sb-w-collapsed)}
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:var(--sb-w-collapsed);background:var(--sb-bg);border-right:1px solid rgba(0,0,0,.09);display:flex;flex-direction:column;z-index:200;overflow:hidden;transition:var(--sb-trans)}
+.sidebar:hover{width:var(--sb-w-expanded);box-shadow:2px 0 20px rgba(0,0,0,.32)}
+.sb-logo{display:flex;align-items:center;gap:10px;padding:0 12px;height:56px;border-bottom:.5px solid var(--sb-sep);flex-shrink:0;overflow:hidden;white-space:nowrap;text-decoration:none}
+.sb-logo-mark{width:24px;height:24px;background:var(--sb-brand);border-radius:5px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:600;flex-shrink:0}
+.sb-logo-text{font-size:13px;font-weight:500;color:var(--sb-text);opacity:0;transition:opacity 160ms ease 30ms}
+.sidebar:hover .sb-logo-text{opacity:1}
+.sb-section-label{padding:14px 14px 3px;font-size:10px;font-weight:500;letter-spacing:.08em;color:var(--sb-text-dim);text-transform:uppercase;white-space:nowrap;opacity:0;transition:opacity 140ms ease}
+.sidebar:hover .sb-section-label{opacity:1}
+.sb-nav{flex:1;overflow:hidden;padding:6px 6px 0;display:flex;flex-direction:column}
+.sb-item{display:flex;align-items:center;gap:10px;padding:0 8px;height:36px;border-radius:6px;color:var(--sb-text);white-space:nowrap;text-decoration:none;cursor:pointer;transition:background 120ms,color 120ms;overflow:hidden;flex-shrink:0}
+.sb-item:hover{background:var(--sb-hover);color:var(--t1)}
+.sb-item.active{background:var(--sb-active);color:#1A6B4A}
+.sb-icon{flex-shrink:0;width:20px;height:20px;display:block}
+.sb-label{font-size:13px;opacity:0;transition:opacity 150ms ease 20ms}
+.sidebar:hover .sb-label{opacity:1}
+.sb-sep{height:.5px;background:var(--sb-sep);margin:6px 0;flex-shrink:0}
+.sb-bottom{padding:6px 6px 12px;border-top:.5px solid var(--sb-sep);display:flex;flex-direction:column;flex-shrink:0}
+@media(max-width:768px){.sidebar{display:none}body.has-sidebar{padding-left:0}}
+</style>
+</head>
+<body>
+
+<!-- ── 인증 로딩 스피너 ── -->
+<div id="auth-loading" style="display:none;position:fixed;inset:0;z-index:9999;
+  background:var(--sur);flex-direction:column;align-items:center;justify-content:center;gap:12px">
+  <div style="width:28px;height:28px;border:3px solid var(--brand-bd);
+    border-top-color:var(--brand);border-radius:50%;animation:spin .7s linear infinite"></div>
+  <div style="font-size:14px;color:var(--t3);font-weight:500">고팡 인증 확인 중…</div>
+</div>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+
+<!-- ── 인증 모달 ── -->
+<div id="auth-modal" style="display:none;position:fixed;inset:0;z-index:9000;
+  background:rgba(0,0,0,.4);align-items:center;justify-content:center;padding:24px"
+  onclick="if(event.target===this)this.classList.remove('open')">
+  <div id="auth-modal-content" style="background:var(--sur);border-radius:16px;
+    width:min(400px,100%);box-shadow:0 20px 60px rgba(0,0,0,.15);padding:28px 24px"></div>
+</div>
+<style>#auth-modal.open{display:flex}</style>
+
+<!-- ── 사이드바 ── -->
+<aside class="sidebar" role="navigation" aria-label="K-Insurance 메인 메뉴">
+  <a href="desktop.html" class="sb-logo">
+    <div class="sb-logo-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:55%;height:55%" aria-hidden="true"><path d="M12 2L3 7l9 5 9-5-9-5z"/><path d="M3 17l9 5 9-5"/><path d="M3 12l9 5 9-5"/></svg>
+    </div>
+    <span class="sb-logo-text">K-Insurance</span>
+  </a>
+
+  <nav class="sb-nav">
+    <a href="#features" class="sb-item active">
+      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l-2 0l9 -9l9 9l-2 0"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"/><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"/></svg>
+      <span class="sb-label">서비스 소개</span>
+    </a>
+    <a href="webapp.html" class="sb-item">
+      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 12l2 2l4 -4"/><path d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3"/></svg>
+      <span class="sb-label">내 보험</span>
+    </a>
+    <a href="#pdv" class="sb-item">
+      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-8 0a8 8 0 1 0 16 0a8 8 0 1 0 -16 0"/><path d="M9 12l2 2l4 -4"/></svg>
+      <span class="sb-label">PDV 데이터 통합</span>
+    </a>
+    <a href="#products" class="sb-item">
+      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 5m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z"/><path d="M3 10l18 0"/><path d="M7 15l.01 0"/><path d="M11 15l2 0"/></svg>
+      <span class="sb-label">상품 안내</span>
+    </a>
+    <a href="#claim" class="sb-item">
+      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="12" y2="17"/></svg>
+      <span class="sb-label">보험금 청구</span>
+    </a>
+    <a href="#auto" class="sb-item">
+      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="9"/></svg>
+      <span class="sb-label">자동 보험</span>
+    </a>
+    <a href="dashboard.html" class="sb-item">
+      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1"/><path d="M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1"/><path d="M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1"/><path d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1"/></svg>
+      <span class="sb-label">관리자 대시보드</span>
+    </a>
+
+    <div class="sb-sep"></div>
+
+    <div class="sb-section-label">문서</div>
+    <a href="https://github.com/Openhash-Gopang/insurance/blob/main/docs/DESIGN.md" class="sb-item" target="_blank" rel="noopener">
+      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      <span class="sb-label">설계 문서</span>
+    </a>
+    <a href="https://github.com/Openhash-Gopang/insurance/blob/main/docs/API.md" class="sb-item" target="_blank" rel="noopener">
+      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      <span class="sb-label">API 명세</span>
+    </a>
+
+    <div class="sb-sep"></div>
+
+    <div class="sb-section-label">연동 서비스</div>
+    <a href="https://911.gopang.net" class="sb-item">
+      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 10h16v10a1 1 0 0 1 -1 1h-14a1 1 0 0 1 -1 -1z"/><path d="M4 14h16"/><path d="M12 10v11"/><path d="M4 7m0 1a1 1 0 0 1 1 -1h14a1 1 0 0 1 1 1v2a0 0 0 0 1 0 0h-16a0 0 0 0 1 0 0z"/></svg>
+      <span class="sb-label">K-119</span>
+    </a>
+    <a href="https://health.gopang.net" class="sb-item">
+      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-8 0a8 8 0 1 0 16 0a8 8 0 1 0 -16 0"/><path d="M12 8v4l2 2"/></svg>
+      <span class="sb-label">K-Health</span>
+    </a>
+    <a href="https://traffic.gopang.net" class="sb-item">
+      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M5 17h-2v-6l2-5h9l4 5h1a2 2 0 0 1 2 2v4h-2m-4 0h-6m-6-6h15m-6 0v-5"/></svg>
+      <span class="sb-label">K-Traffic</span>
+    </a>
+    <a href="https://klaw.gopang.net" class="sb-item">
+      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 4l6 6l-3.5 3.5"/><path d="M6 10l8 -6"/><path d="M10 6l-6 6l7 7l6 -6"/><path d="M4 20l3.5 -3.5"/></svg>
+      <span class="sb-label">K-Law</span>
+    </a>
+    <a href="https://gdc.gopang.net" class="sb-item">
+      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M17 8v-3a1 1 0 0 0 -1 -1h-10a2 2 0 0 0 0 4h12a1 1 0 0 1 1 1v3m0 4v3a1 1 0 0 1 -1 1h-12a2 2 0 0 1 -2 -2v-12"/><path d="M20 12v4h-4a2 2 0 0 1 0 -4h4"/></svg>
+      <span class="sb-label">GDC</span>
+    </a>
+  </nav>
+
+  <div class="sb-bottom">
+    <a href="https://gopang.net" class="sb-item">
+      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0"/><path d="M5 12l6 6"/><path d="M5 12l6 -6"/></svg>
+      <span class="sb-label">고팡으로 돌아가기</span>
+    </a>
+    <a href="#" class="sb-item" id="sb-settings">
+      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z"/><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/></svg>
+      <span class="sb-label">설정</span>
+    </a>
+  </div>
+</aside>
+
+<!-- ── 최상단 배너 ── -->
+<div class="banner" id="site-banner" role="banner">
+  <strong>K-Insurance</strong>는 오픈소스 공동체이며, 누구나 기능 개선에
+  <a href="https://github.com/Openhash-Gopang/insurance" target="_blank" rel="noopener">참여할 수 있습니다 →</a>
+  <button class="banner-close" onclick="document.getElementById('site-banner').style.display='none'" aria-label="배너 닫기">✕</button>
+</div>
+
+<!-- ── 백서·문서 배너 ── -->
+<div id="wp-banner" style="background:#f8fafc;border-bottom:1px solid #e2e8f0;padding:8px 20px;display:flex;align-items:center;gap:12px;font-size:12px;color:#475569;flex-wrap:wrap;position:sticky;top:0;z-index:80;">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+  <span style="font-weight:600;color:#1e293b">설계 문서 공개</span>
+  <span style="color:#94a3b8">|</span>
+  <a href="https://github.com/Openhash-Gopang/insurance/blob/main/docs/DESIGN.md" target="_blank" rel="noopener" style="color:#2563eb;text-decoration:none;font-weight:500;display:inline-flex;align-items:center;gap:3px;">
+    DESIGN.md <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+  </a>
+  <a href="https://github.com/Openhash-Gopang/insurance/blob/main/docs/API.md" target="_blank" rel="noopener" style="color:#2563eb;text-decoration:none;font-weight:500;display:inline-flex;align-items:center;gap:3px;">
+    API.md <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+  </a>
+  <a href="https://github.com/Openhash-Gopang/insurance/blob/main/prompts/SP-INS_agent_v2.0.txt" target="_blank" rel="noopener" style="color:#2563eb;text-decoration:none;font-weight:500;display:inline-flex;align-items:center;gap:3px;">
+    AI Agent 프롬프트 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+  </a>
+  <button onclick="document.getElementById('wp-banner').style.display='none'" style="margin-left:auto;background:none;border:none;cursor:pointer;color:#94a3b8;font-size:14px;line-height:1;padding:0 2px;" aria-label="배너 닫기">✕</button>
+</div>
+
+<!-- ── NAV ── -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="desktop.html" class="logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:58%;height:58%" aria-hidden="true"><path d="M12 2L3 7l9 5 9-5-9-5z"/><path d="M3 17l9 5 9-5"/><path d="M3 12l9 5 9-5"/></svg>
+      </div>
+      K-Insurance
+    </a>
+    <div class="nav-links nav-links-desktop">
+      <a href="#features">서비스</a>
+      <a href="#pdv">PDV</a>
+      <a href="#products">상품</a>
+      <a href="#claim">청구</a>
+      <a href="#auto">자동 보험</a>
+      <a href="dashboard.html">대시보드</a>
+      <a href="https://github.com/Openhash-Gopang/insurance" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:4px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        GitHub
+      </a>
+    </div>
+    <div class="nav-right">
+      <span id="auth-badge" onclick="document.getElementById('auth-modal').classList.add('open')"
+        style="font-size:11px;font-weight:600;color:var(--t3);background:var(--sur);
+        border:.5px solid var(--bd);border-radius:20px;padding:3px 10px;cursor:pointer"></span>
+      <a href="dashboard.html" class="btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1"/><path d="M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1"/><path d="M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1"/><path d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1"/></svg>
+        대시보드
+      </a>
+      <a href="webapp.html" class="btn btn-brand">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 12l2 2l4 -4"/><path d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3"/></svg>
+        내 보험 열기
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-badge"><span class="pulse"></span>PDV · K-Traffic · K-Health 연동 중</div>
+  <h1>사고가 나는 순간,<br>보험금이 자동으로 지급됩니다</h1>
+  <p class="hero-sub">K-Insurance는 종래의 보험회사를 AI로 완전 대체합니다. 당신의 PDV 전생애 기록, K-Traffic 교통 이력, K-Health 건강 이력이 보험료를 결정하고 사고를 증명합니다. 서류도, 심사 기간도, 설계사도 없습니다.</p>
+  <div class="hero-actions">
+    <a href="webapp.html" class="btn btn-brand">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 12l2 2l4 -4"/><path d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3"/></svg>
+      내 보험 열기
+    </a>
+    <a href="dashboard.html" class="btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1"/><path d="M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1"/><path d="M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1"/><path d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1"/></svg>
+      관리자 대시보드
+    </a>
+  </div>
+  <div class="stat-strip">
+    <div class="stat"><div class="stat-val"><em>0.3초</em></div><div class="stat-lbl">표준 청구 AI 심사</div></div>
+    <div class="stat"><div class="stat-val"><em>3종</em></div><div class="stat-lbl">PDV 데이터 소스</div></div>
+    <div class="stat"><div class="stat-val"><em>₮0.1</em></div><div class="stat-lbl">최소 보험료 단위</div></div>
+    <div class="stat"><div class="stat-val"><em>0%</em></div><div class="stat-lbl">설계사·지점 수수료</div></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ── 핵심 서비스 ── -->
+<section id="features" class="section">
+  <div class="container">
+    <div class="section-hd">
+      <h2>핵심 서비스</h2>
+    </div>
+    <p class="features-desc">
+      K-Insurance는 종래의 보험을 AI로 완전 대체하는 고팡의 보험 Agent입니다.<br>
+      <span class="fd-bullet">◆</span> <a href="https://gopang.net" target="_blank" rel="noopener">고팡</a>은 현실 세계의 AI 쌍둥이들로 구성된 평행 세계입니다.<br>
+      <span class="fd-bullet">◆</span> 사용자의 <strong>PDV(개인 데이터 금고)</strong>는 그의 동선·일상·업무의 모든 것을 6하원칙으로 기록합니다. 이 기록은 OpenHash에 앵커링되어 위조·변조가 원천 차단됩니다.<br>
+      <span class="fd-bullet">◆</span> <a href="https://traffic.gopang.net" target="_blank" rel="noopener">K-Traffic</a>은 사용자의 차량 이용 이력 전체 — 운행 경로·속도·사고·카풀 이용 — 를 철저히 기록합니다. 탑승 보험·자동차 보험의 리스크 산출과 사고 조사의 1차 증거가 됩니다.<br>
+      <span class="fd-bullet">◆</span> <a href="https://health.gopang.net" target="_blank" rel="noopener">K-Health</a>는 사용자의 질병·진료·처방·수술 이력을 생애 단위로 관리합니다. 건강·생명보험의 인수 심사 기준이자 실손 보험금 자동 청구의 원천입니다.<br>
+      <span class="fd-bullet">◆</span> 이 세 가지 데이터 소스는 모두 OpenHash 분산원장에 앵커링되므로 사용자 스스로도 위조할 수 없습니다. 보험 사기가 구조적으로 불가능합니다.<br>
+      <span class="fd-bullet">◆</span> 표준 청구는 AI(DeepSeek V4 Pro)가 0.3초에 처리합니다. 고액·분쟁 청구는 Claude Opus로 에스컬레이션합니다.<br>
+      <span class="fd-bullet">◆</span> 배상 책임 판단은 <a href="https://klaw.gopang.net" target="_blank" rel="noopener">K-Law v15.1</a>의 법적 분석을 반드시 참조합니다.
+    </p>
+    <p class="features-closing">보험료는 당신의 실제 삶이 결정합니다. 건강하게, 안전하게 운전하고, 규칙적으로 생활할수록 보험료는 낮아집니다. 모든 소스코드와 AI 시스템 프롬프트는 GPL v3.0 오픈소스입니다.</p>
+    <div class="feature-grid">
+      <div class="feature-cell">
+        <div class="feature-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="9"/></svg></div>
+        <div class="feature-title">이벤트 자동 보험</div>
+        <p class="feature-desc">K-Traffic 탑승, K-Market 배달, K-119 응급 이벤트 감지 시 자동 보험 적용. 사용자 조작 불필요.</p>
+        <span class="feature-badge">사용자 개입 0</span>
+      </div>
+      <div class="feature-cell">
+        <div class="feature-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-8 0a8 8 0 1 0 16 0a8 8 0 1 0 -16 0"/><path d="M9 12l2 2l4 -4"/></svg></div>
+        <div class="feature-title">PDV 전생애 기록 — 증거 자동 수집</div>
+        <p class="feature-desc">사고 발생 즉시 PDV 6하원칙 기록이 증거를 구성. OpenHash 앵커링으로 위변조 불가. 별도 서류 제출 불필요.</p>
+        <span class="feature-badge">서류 0건</span>
+      </div>
+      <div class="feature-cell">
+        <div class="feature-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2"/><path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"/><path d="M14 4v4h-4v-4"/></svg></div>
+        <div class="feature-title">AI 심사 0.3초</div>
+        <p class="feature-desc">표준 청구는 DeepSeek V4 Pro가 0.3초에 완료. 고액·분쟁 청구는 Claude Opus 에스컬레이션.</p>
+        <span class="feature-badge">AI 자동 심사</span>
+      </div>
+      <div class="feature-cell">
+        <div class="feature-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M5 17h-2v-6l2-5h9l4 5h1a2 2 0 0 1 2 2v4h-2m-4 0h-6m-6-6h15m-6 0v-5"/></svg></div>
+        <div class="feature-title">K-Traffic 교통 전이력</div>
+        <p class="feature-desc">운행·사고·위험 운전 이력으로 보험료 산출. 3년 무사고 할인. 교통사고 청구 시 K-Traffic 로그가 1차 증거.</p>
+        <span class="feature-badge">전이력 반영</span>
+      </div>
+      <div class="feature-cell">
+        <div class="feature-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.566"/></svg></div>
+        <div class="feature-title">K-Health 건강 전이력</div>
+        <p class="feature-desc">전생애 진료·처방·수술 이력으로 건강보험 인수 심사. 기왕증 자동 판별. 실손청구 시 K-Health 기록이 직접 근거.</p>
+        <span class="feature-badge">생애 이력 연동</span>
+      </div>
+      <div class="feature-cell">
+        <div class="feature-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 11m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z"/><path d="M12 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path d="M8 11v-4a4 4 0 0 1 8 0v4"/></svg></div>
+        <div class="feature-title">보험 사기 구조적 차단</div>
+        <p class="feature-desc">PDV·K-Traffic·K-Health는 OpenHash 앵커링으로 위변조 불가. 청구 사실과 데이터 불일치 시 K-Police 자동 연동.</p>
+        <span class="feature-badge">위변조 불가</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ── PDV 데이터 통합 ── -->
+<section id="pdv" class="section">
+  <div class="container">
+    <div class="section-hd">
+      <h2>당신의 삶이 보험료를 결정합니다</h2>
+      <p>PDV · K-Traffic · K-Health — 세 가지 데이터 금고가 보험의 모든 것을 처리합니다.</p>
+    </div>
+
+    <p class="rates-desc">
+      고팡의 모든 데이터는 <strong>OpenHash 분산원장</strong>에 앵커링됩니다. 사용자 본인도, 고팡 팀도, 어떤 해커도 이 기록을 수정할 수 없습니다. 이 불변성이 K-Insurance의 두 가지 핵심 가치를 동시에 실현합니다.
+    </p>
+    <p class="rates-desc">
+      <span class="fd-bullet">◆</span> <strong>보험료 정직성</strong> — 실제 삶이 그대로 반영됩니다. 건강하게, 안전하게, 규칙적으로 살수록 보험료가 낮아집니다. 데이터를 꾸밀 수 없으므로 역선택이 구조적으로 차단됩니다.<br>
+      <span class="fd-bullet">◆</span> <strong>보험 사기 차단</strong> — 사고 사실이 PDV·K-Traffic·K-Health 기록과 불일치하면 즉시 감지됩니다. 별도 조사가 없어도 데이터 자체가 사기를 차단합니다.
+    </p>
+
+    <!-- PDV -->
+    <div class="pdv-section">
+      <div class="pdv-hd">
+        <div class="pdv-hd-icon pdv">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-8 0a8 8 0 1 0 16 0a8 8 0 1 0 -16 0"/><path d="M9 12l2 2l4 -4"/></svg>
+        </div>
+        <div class="pdv-hd-text">
+          <h4>PDV (Private Data Vault) — 전생애 동선·행동 기록</h4>
+          <p>사용자 기기에 암호화 저장 · OpenHash 해시만 서버 보관 · 6하원칙 구조화</p>
+        </div>
+        <span class="openhash-badge">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 11m0 2a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/><path d="M12 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0-2 0"/><path d="M8 11v-4a4 4 0 0 1 8 0v4"/></svg>
+          OpenHash 앵커
+        </span>
+      </div>
+      <div class="pdv-body">
+        <div class="pdv-items">
+          <div class="pdv-item">
+            <span class="pdv-item-dot dot-pdv"></span>
+            <div class="pdv-item-text"><strong>사고 즉시 증거 구성</strong>사고 시각·장소·경위를 6하원칙으로 자동 추출. 청구 서류 자동 생성.</div>
+          </div>
+          <div class="pdv-item">
+            <span class="pdv-item-dot dot-pdv"></span>
+            <div class="pdv-item-text"><strong>생활 패턴 리스크 분석</strong>위험 직종 종사, 심야 외출 빈도 등 생활 패턴 반영.
+              <span class="pdv-coeff coeff-up">위험 패턴 ×1.05~1.3</span>
+              <span class="pdv-coeff coeff-dn">안정 패턴 ×0.97</span>
+            </div>
+          </div>
+          <div class="pdv-item">
+            <span class="pdv-item-dot dot-pdv"></span>
+            <div class="pdv-item-text"><strong>사기 탐지 — 시각·장소 검증</strong>청구 내용과 PDV 기록 불일치 즉시 감지 → K-Police 자동 연동.</div>
+          </div>
+          <div class="pdv-item">
+            <span class="pdv-item-dot dot-pdv"></span>
+            <div class="pdv-item-text"><strong>모든 고팡 서비스 행위 기록</strong>결제·이동·주문·대화 — 사고 경위 재구성의 완전한 맥락.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- K-Traffic -->
+    <div class="pdv-section">
+      <div class="pdv-hd">
+        <div class="pdv-hd-icon traffic">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M5 17h-2v-6l2-5h9l4 5h1a2 2 0 0 1 2 2v4h-2m-4 0h-6m-6-6h15m-6 0v-5"/></svg>
+        </div>
+        <div class="pdv-hd-text">
+          <h4>K-Traffic PDV (traffic.gopang.net) — 차량 이용 전이력</h4>
+          <p>운행 경로·속도·사고·카풀·야간 운행 — 생애 단위 누적 관리</p>
+        </div>
+        <span class="openhash-badge">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 11m0 2a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/><path d="M12 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0-2 0"/><path d="M8 11v-4a4 4 0 0 1 8 0v4"/></svg>
+          OpenHash 앵커
+        </span>
+      </div>
+      <div class="pdv-body">
+        <div class="pdv-items">
+          <div class="pdv-item">
+            <span class="pdv-item-dot dot-traffic"></span>
+            <div class="pdv-item-text"><strong>교통사고 청구의 1차 증거</strong>사고 시각·경로·속도 데이터 자동 확보. 사고 경위 AI 재구성.</div>
+          </div>
+          <div class="pdv-item">
+            <span class="pdv-item-dot dot-traffic"></span>
+            <div class="pdv-item-text"><strong>무사고 이력 자동 할인</strong>
+              <span class="pdv-coeff coeff-dn">3년 무사고 ×0.90</span>
+              <span class="pdv-coeff coeff-dn">5년 무사고 ×0.85</span>
+            </div>
+          </div>
+          <div class="pdv-item">
+            <span class="pdv-item-dot dot-traffic"></span>
+            <div class="pdv-item-text"><strong>위험 운전 패턴 감지</strong>과속·급제동 빈도 상위 10%: <span class="pdv-coeff coeff-up">×1.30</span> · 야간 운행 50%↑: <span class="pdv-coeff coeff-up">×1.15</span></div>
+          </div>
+          <div class="pdv-item">
+            <span class="pdv-item-dot dot-traffic"></span>
+            <div class="pdv-item-text"><strong>사고 이력 반영</strong>최근 1년 사고 1건: <span class="pdv-coeff coeff-up">×1.20</span> · 2건 이상: <span class="pdv-coeff coeff-up">×1.50</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- K-Health -->
+    <div class="pdv-section" style="margin-bottom:0">
+      <div class="pdv-hd">
+        <div class="pdv-hd-icon health">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.566"/></svg>
+        </div>
+        <div class="pdv-hd-text">
+          <h4>K-Health PDV (health.gopang.net) — 전생애 의료 이력</h4>
+          <p>진단·진료·처방·수술·입원 — 생애 단위 누적 관리 · 기왕증 자동 판별</p>
+        </div>
+        <span class="openhash-badge">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 11m0 2a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/><path d="M12 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0-2 0"/><path d="M8 11v-4a4 4 0 0 1 8 0v4"/></svg>
+          OpenHash 앵커
+        </span>
+      </div>
+      <div class="pdv-body">
+        <div class="pdv-items">
+          <div class="pdv-item">
+            <span class="pdv-item-dot dot-health"></span>
+            <div class="pdv-item-text"><strong>실손보험 자동 청구</strong>K-Health 진료기록 직접 연동 → 청구 서류 0건. 지급까지 0.3초.</div>
+          </div>
+          <div class="pdv-item">
+            <span class="pdv-item-dot dot-health"></span>
+            <div class="pdv-item-text"><strong>기왕증 자동 판별</strong>가입일 이전 K-Health 이력으로 미고지 기왕증 즉시 확인. 보험 사기 구조 차단.</div>
+          </div>
+          <div class="pdv-item">
+            <span class="pdv-item-dot dot-health"></span>
+            <div class="pdv-item-text"><strong>건강 우수 이력 할인</strong>5년 이상 진료 기록 없음: <span class="pdv-coeff coeff-dn">×0.92</span> · 정기검진 완료: <span class="pdv-coeff coeff-dn">×0.95</span></div>
+          </div>
+          <div class="pdv-item">
+            <span class="pdv-item-dot dot-health"></span>
+            <div class="pdv-item-text"><strong>만성질환·입원 이력 반영</strong>고혈압·당뇨 등: <span class="pdv-coeff coeff-up">×1.20~1.50</span> · 3년 2회 이상 입원: <span class="pdv-coeff coeff-up">×1.25</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ── 상품 안내 ── -->
+<section id="products" class="section">
+  <div class="container">
+    <div class="section-hd">
+      <h2>보험 상품 및 보험료</h2>
+    </div>
+    <p class="rates-desc">
+      지점도 설계사도 주주도 없으므로, 보험료는 시중 보험사 대비 최대 40% 저렴하고 보험금 지급은 현저히 빠릅니다.
+    </p>
+    <p class="rates-desc">
+      <span class="fd-bullet">◆</span> 보험료는 재무제표 기반 리스크 등급(AAA~C)으로 자동 산출됩니다.<br>
+      <span class="fd-bullet">◆</span> 자동 보험(AUTO)은 이벤트 트리거 시 GDC에서 자동 차감됩니다.<br>
+      <span class="fd-bullet">◆</span> 정기 보험료는 월 단위로 GDC 자동 출금됩니다.
+    </p>
+
+    <div class="product-grid" style="margin-bottom:24px">
+      <!-- 자동 보험 -->
+      <div class="panel">
+        <div class="panel-hd">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="9"/></svg>
+          자동 보험 (AUTO)
+        </div>
+        <table class="rt">
+          <tr><td>탑승 보험</td><td class="grn">₮0.5 / 건</td></tr>
+          <tr><td>배달 보험</td><td class="grn">₮0.3 / 건</td></tr>
+          <tr><td>응급 의료 보험</td><td class="grn">₮1.0 / 건</td></tr>
+          <tr><td>거래 사기 보험</td><td class="grn">₮0.1 / 건</td></tr>
+        </table>
+      </div>
+      <!-- 건강·생명 -->
+      <div class="panel">
+        <div class="panel-hd">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.566"/></svg>
+          건강·생명 (HEALTH · LIFE)
+        </div>
+        <table class="rt">
+          <tr><td>실손 의료보험</td><td>₮3,000 / 월</td></tr>
+          <tr><td>암 보험</td><td>₮8,000 / 월</td></tr>
+          <tr><td>간병 보험</td><td>₮5,000 / 월</td></tr>
+          <tr><td>정기 생명보험</td><td>₮5,000 / 월</td></tr>
+        </table>
+      </div>
+      <!-- 재산 -->
+      <div class="panel">
+        <div class="panel-hd">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l-2 0l9 -9l9 9l-2 0"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"/></svg>
+          재산 보험 (PROPERTY)
+        </div>
+        <table class="rt">
+          <tr><td>화재 보험</td><td>₮2,000 / 월</td></tr>
+          <tr><td>도난 보험</td><td>₮1,500 / 월</td></tr>
+          <tr><td>여행자 보험</td><td>₮1,000 / 일</td></tr>
+        </table>
+      </div>
+      <!-- 배상책임 -->
+      <div class="panel">
+        <div class="panel-hd">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 4l6 6l-3.5 3.5"/><path d="M6 10l8 -6"/><path d="M10 6l-6 6l7 7l6 -6"/></svg>
+          배상 책임 (LIABILITY)
+        </div>
+        <table class="rt">
+          <tr><td>개인 배상책임</td><td>₮500 / 월</td></tr>
+          <tr><td>사업자 배상책임</td><td>₮3,000 / 월</td></tr>
+          <tr><td>사이버 보험</td><td>₮2,000 / 월</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- 리스크 등급별 조정계수 -->
+    <div class="panel" style="margin-bottom:0">
+      <div class="panel-hd">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 14l6 -6"/><circle cx="9.5" cy="8.5" r=".5" fill="currentColor"/><circle cx="14.5" cy="13.5" r=".5" fill="currentColor"/><path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2"/></svg>
+        리스크 등급별 보험료 조정계수 (재무제표 자동 산출)
+      </div>
+      <table class="rt">
+        <tr>
+          <td><span class="grade-chip g-AAA">AAA</span></td>
+          <td>순자산 최상위 — 조정계수 ×0.7</td>
+          <td class="grn">기준 보험료의 70%</td>
+        </tr>
+        <tr>
+          <td><span class="grade-chip g-AA">AA</span></td>
+          <td>순자산 우수 — 조정계수 ×0.8</td>
+          <td>기준 보험료의 80%</td>
+        </tr>
+        <tr>
+          <td><span class="grade-chip g-A">A</span></td>
+          <td>순자산 양호 — 조정계수 ×0.9</td>
+          <td>기준 보험료의 90%</td>
+        </tr>
+        <tr>
+          <td><span class="grade-chip g-BBB">BBB</span></td>
+          <td>기준 — 조정계수 ×1.0</td>
+          <td>기준 보험료</td>
+        </tr>
+        <tr>
+          <td><span class="grade-chip g-BB">BB</span></td>
+          <td>주의 — 조정계수 ×1.2</td>
+          <td>기준 보험료의 120%</td>
+        </tr>
+        <tr>
+          <td><span class="grade-chip g-C">C</span></td>
+          <td>고위험 — 조정계수 ×1.5</td>
+          <td>기준 보험료의 150%</td>
+        </tr>
+      </table>
+    </div>
+
+    <p class="rates-closing" style="margin-top:24px">
+      리스크 등급은 <a href="https://gdc.gopang.net" target="_blank" rel="noopener">GDC 재무제표</a>(bs-cash·순자산)와 최근 3년 청구 이력으로 자동 산출됩니다. 무사고 시 ×0.95 추가 할인이 적용됩니다.
+    </p>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ── 보험금 청구 플로우 ── -->
+<section id="claim" class="section">
+  <div class="container">
+    <div class="section-hd">
+      <h2>보험금 청구 처리 — 6단계 자동화</h2>
+      <p>사고 발생부터 보험금 지급까지 사람이 개입하지 않습니다.</p>
+    </div>
+
+    <div class="panel" style="overflow:hidden;margin-bottom:24px">
+      <div class="flow-row">
+        <div class="flow-step">
+          <div class="flow-num">1</div>
+          <div class="flow-title">청구 접수</div>
+          <div class="flow-desc">사건번호 INS-YYYYMMDD-XXXX 자동 발급</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">2</div>
+          <div class="flow-title">증거 수집</div>
+          <div class="flow-desc">PDV + OpenHash + K-119·K-Traffic 데이터</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">3</div>
+          <div class="flow-title">사기 탐지</div>
+          <div class="flow-desc">5가지 패턴 AI 검사. 이상 시 K-Police 연동</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">4</div>
+          <div class="flow-title">AI 심사</div>
+          <div class="flow-desc">표준: DeepSeek V4 Pro (0.3초)<br>고액: Claude Opus</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">5</div>
+          <div class="flow-title">법적 분석</div>
+          <div class="flow-desc">배상책임 시 K-Law v15.1 자동 호출</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">6</div>
+          <div class="flow-title">GDC 지급</div>
+          <div class="flow-desc">승인 즉시 GDC 자동 입금 + OpenHash 앵커</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="access-grid">
+      <div class="access-card">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="ti" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 2m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v16a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"/><path d="M10 9h4"/><path d="M10 13h4"/><path d="M12 17h.01"/></svg>
+          표준 청구 (₮1M 미만)
+        </h3>
+        <p>DeepSeek V4 Pro가 자동 처리합니다. 목표 처리 시간은 0.3초이며, 보험금은 GDC로 즉시 입금됩니다.</p>
+        <ul class="access-list">
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="ti" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10"/></svg>자동 탑승·배달·응급 보험</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="ti" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10"/></svg>K-Health 실손보험 자동 청구</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="ti" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10"/></svg>화재·도난 보험 일반 청구</li>
+        </ul>
+        <a href="webapp.html" class="btn btn-brand">청구 접수하기</a>
+      </div>
+      <div class="access-card">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="ti" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 6l4 6l-4 6l-4 -6z"/><path d="M12 3v3"/><path d="M12 18v3"/><path d="M3 12h3"/><path d="M18 12h3"/></svg>
+          고액·분쟁 청구 (₮1M 이상)
+        </h3>
+        <p>Claude Opus가 심층 분석합니다. K-Law v15.1 법적 분석이 자동으로 수반되며, 처리 시간은 최대 24시간입니다.</p>
+        <ul class="access-list">
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="ti" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10"/></svg>Claude Opus 에스컬레이션</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="ti" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10"/></svg>K-Law v15.1 배상책임 분석</li>
+          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="ti" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10"/></svg>이의 신청 90일 보장</li>
+        </ul>
+        <a href="dashboard.html" class="btn">현황 조회</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ── 자동 보험 트리거 ── -->
+<section id="auto" class="section">
+  <div class="container">
+    <div class="section-hd">
+      <h2>이벤트 트리거 자동 보험</h2>
+      <p>말 한마디 없이, 생활 속 이벤트가 발생하는 순간 보험이 자동 적용됩니다.</p>
+    </div>
+
+    <div class="trigger-grid">
+      <div class="trigger-card">
+        <h4>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M5 17h-2v-6l2-5h9l4 5h1a2 2 0 0 1 2 2v4h-2m-4 0h-6m-6-6h15m-6 0v-5"/></svg>
+          탑승 보험
+        </h4>
+        <p>K-Traffic에서 카풀·택시 탑승 이벤트 감지 시 자동 적용. 탑승 시작~하차 완료 + 30분 보장.</p>
+        <div class="trigger-premium">₮0.5 / 건 · 보장 ₮50,000</div>
+      </div>
+      <div class="trigger-card">
+        <h4>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6.331 8h11.338a2 2 0 0 1 1.977 2.304l-1.255 8.152a3 3 0 0 1 -2.966 2.544h-6.85a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.976 -2.304z"/><path d="M9 11v-5a3 3 0 0 1 6 0v5"/></svg>
+          배달 보험
+        </h4>
+        <p>K-Market 배달 주문 이벤트 감지 시 자동 적용. 배달 완료까지 + 30분 보장.</p>
+        <div class="trigger-premium">₮0.3 / 건 · 보장 ₮10,000</div>
+      </div>
+      <div class="trigger-card">
+        <h4>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 10h16v10a1 1 0 0 1 -1 1h-14a1 1 0 0 1 -1 -1z"/><path d="M4 14h16"/><path d="M12 10v11"/><path d="M4 7m0 1a1 1 0 0 1 1 -1h14a1 1 0 0 1 1 1v2a0 0 0 0 1 0 0h-16a0 0 0 0 1 0 0z"/></svg>
+          응급 의료 보험
+        </h4>
+        <p>K-119 출동번호(FD-) 발급 즉시 자동 적용. 응급처치·입원·수술비 실손 보장. K-Health 자동 청구.</p>
+        <div class="trigger-premium">₮1.0 / 건 · 보장 ₮100,000</div>
+      </div>
+      <div class="trigger-card">
+        <h4>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M17 8v-3a1 1 0 0 0 -1 -1h-10a2 2 0 0 0 0 4h12a1 1 0 0 1 1 1v3m0 4v3a1 1 0 0 1 -1 1h-12a2 2 0 0 1 -2 -2v-12"/><path d="M20 12v4h-4a2 2 0 0 1 0 -4h4"/></svg>
+          거래 사기 보험
+        </h4>
+        <p>GDC ₮500,000 이상 고액 이체 시 자동 적용. 거래 확정 후 72시간 보장. K-Police 연동.</p>
+        <div class="trigger-premium">₮0.1 / 건 · 보장 ₮5,000</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:var(--t3)"><path d="M12 2L3 7l9 5 9-5-9-5z"/><path d="M3 17l9 5 9-5"/><path d="M3 12l9 5 9-5"/></svg>
+          K-Insurance
+        </div>
+        <p class="footer-desc">Gopang AI 보험 Agent — OpenHash 분산원장 기반<br>종래의 보험을 대체하는 AI 쌍둥이 · 제주 시범 서비스</p>
+      </div>
+      <div>
+        <div class="footer-col-title">서비스</div>
+        <ul class="footer-links">
+          <li><a href="webapp.html">내 보험</a></li>
+          <li><a href="dashboard.html">대시보드</a></li>
+          <li><a href="#products">상품 안내</a></li>
+          <li><a href="https://gopang.net">고팡 홈</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">연동 서비스</div>
+        <ul class="footer-links">
+          <li><a href="https://911.gopang.net">K-119</a></li>
+          <li><a href="https://health.gopang.net">K-Health</a></li>
+          <li><a href="https://traffic.gopang.net">K-Traffic</a></li>
+          <li><a href="https://klaw.gopang.net">K-Law</a></li>
+          <li><a href="https://gdc.gopang.net">GDC</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">법적 안내</div>
+        <ul class="footer-links">
+          <li><a href="#">이용 약관</a></li>
+          <li><a href="#">개인정보처리방침</a></li>
+          <li><a href="https://github.com/Openhash-Gopang/insurance/blob/main/docs/DESIGN.md">설계 문서</a></li>
+          <li><a href="#">면책 조항</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 K-Insurance · AI City Inc.</span>
+      <span>Powered by OpenHash Network · 제주 시범 서비스</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ── AI 상담 모달 ── -->
+<div class="chat-modal-overlay" id="chatOverlay" role="dialog" aria-modal="true" aria-label="K-Insurance AI 상담">
+  <div class="chat-modal">
+    <div class="chat-modal-hd">
+      <div class="chat-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:55%;height:55%" aria-hidden="true"><path d="M12 2L3 7l9 5 9-5-9-5z"/><path d="M3 17l9 5 9-5"/><path d="M3 12l9 5 9-5"/></svg>
+      </div>
+      <div>
+        <div class="chat-title">K-Insurance AI 상담</div>
+        <div class="chat-subtitle">DeepSeek V4 Pro · PDV 연동</div>
+      </div>
+      <button class="chat-close-btn" onclick="closeChat()" aria-label="닫기">✕</button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="chat-msg ai">안녕하세요! K-Insurance AI 상담사입니다.<br>귀하의 PDV·K-Traffic·K-Health 데이터를 기반으로 최적의 보험을 안내합니다. 보험 가입·청구·보험금에 관해 무엇이든 질문하세요.</div>
+    </div>
+    <div class="chat-input-row">
+      <textarea class="chat-input" id="chatInput" placeholder="질문을 입력하세요…" rows="1"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat();}"></textarea>
+      <button class="chat-send-btn" id="chatSendBtn" onclick="sendChat()" aria-label="전송">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2z"/>
+        </svg>
+      </button>
+    </div>
+    <div class="chat-powered">Powered by DeepSeek V4 Pro · gopang-proxy</div>
+  </div>
+</div>
+
+<!-- ── 플로팅 버튼 ── -->
+<div class="float">
+  <button class="float-btn" onclick="openChat()" aria-label="K-Insurance AI 상담 열기">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </svg>
+  </button>
+  <span class="float-label">AI 상담</span>
+</div>
+
+<!-- ── SSO 인증 콜백 ── -->
+<script>
+var _insUser = null;
+
+window._onGopangAuth = function(user) {
+  if (!user) return;
+  _insUser = user;
+
+  document.getElementById('auth-loading').style.display = 'none';
+
+  // 인증 레벨 배지
+  var badge = document.getElementById('auth-badge');
+  if (badge) {
+    var lvlColor = { L0:'var(--t3)', L1:'#00bcd4', L2:'var(--brand)', L3:'#ff9800' };
+    badge.style.color = lvlColor[user.level] || lvlColor.L0;
+    badge.textContent = user.level || 'L0';
+    badge.title       = user.ipv6  || '';
+  }
+
+  // webapp.html 링크에 인증 완료 점 추가
+  document.querySelectorAll('a[href="webapp.html"]').forEach(function(btn) {
+    if (!btn.querySelector('.auth-dot')) {
+      var dot = document.createElement('span');
+      dot.className = 'auth-dot';
+      dot.style.cssText = 'display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--brand);margin-left:5px;vertical-align:middle;flex-shrink:0';
+      btn.appendChild(dot);
+    }
+  });
+
+  // GWP: 고팡에서 direct 호출이면 채팅 바로 열기
+  var params = new URLSearchParams(location.search);
+  if (params.get('gwp') === '1') {
+    openChat();
+  }
+
+  // URL 정리
+  var clean = new URL(location.href);
+  ['gwp','gwp_token','ctx','origin'].forEach(function(k){ clean.searchParams.delete(k); });
+  history.replaceState({}, '', clean.toString());
+};
+
+// 채팅 버튼 인증 가드
+var _origOpenChat = window.openChat;
+window.openChat = function() {
+  if (!_insUser) {
+    document.getElementById('auth-loading').style.display = 'flex';
+    return;
+  }
+  if (_origOpenChat) _origOpenChat();
+};
+</script>
+
+<script type="module" src="https://gopang.net/auth/subsystem-auth.js"></script>
+
+<!-- ── 사이드바 스크롤 추적 ── -->
+<script>
+(function() {
+  document.body.classList.add('has-sidebar');
+  var sections = ['features','pdv','products','claim','auto'];
+  var items = {};
+  sections.forEach(function(id) {
+    var el = document.querySelector('.sb-item[href="#' + id + '"]');
+    if (el) items[id] = el;
+  });
+  var homeItem = document.querySelector('.sb-item[href="#features"]');
+  function onScroll() {
+    var scrollY = window.scrollY + 80;
+    var active = null;
+    sections.forEach(function(id) {
+      var sec = document.getElementById(id);
+      if (sec && sec.offsetTop <= scrollY) active = id;
+    });
+    document.querySelectorAll('.sb-item.active').forEach(function(el) { el.classList.remove('active'); });
+    if (active && items[active]) { items[active].classList.add('active'); }
+    else if (homeItem) { homeItem.classList.add('active'); }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+
+<!-- ── AI 채팅 (DeepSeek V4 Pro via gopang-proxy) ── -->
+<script>
+const PROXY_BASE = 'https://gopang-proxy.tensor-city.workers.dev';
+const SYSTEM_PROMPT_URL = '/prompts/SP-INS_agent_v2.0.txt';
+let INS_SYSTEM_PROMPT = '';
+const chatHistory = [];
+
+(async function loadSystemPrompt() {
+  try {
+    const res = await fetch(SYSTEM_PROMPT_URL);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const raw = await res.text();
+    INS_SYSTEM_PROMPT = raw
+      .split('\n')
+      .filter(line => !line.trimStart().startsWith('#'))
+      .join('\n')
+      .trim();
+  } catch (e) {
+    console.warn('[INS] 시스템 프롬프트 로드 실패, 기본값 사용:', e.message);
+    INS_SYSTEM_PROMPT = '당신은 K-Insurance AI 보험 상담사입니다. PDV·K-Traffic·K-Health 데이터를 기반으로 보험 가입·청구·보험금에 관해 간결하고 정확하게 답변하세요.';
+  }
+})();
+
+function openChat() {
+  document.getElementById('chatOverlay').classList.add('open');
+  document.getElementById('chatInput').focus();
+}
+function closeChat() {
+  document.getElementById('chatOverlay').classList.remove('open');
+}
+document.getElementById('chatOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeChat();
+});
+
+function appendMsg(role, text) {
+  const box = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'chat-msg ' + (role === 'user' ? 'user' : 'ai');
+  div.textContent = text;
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
+  return div;
+}
+
+async function sendChat() {
+  const input = document.getElementById('chatInput');
+  const btn   = document.getElementById('chatSendBtn');
+  const text  = input.value.trim();
+  if (!text) return;
+
+  input.value = '';
+  input.style.height = '';
+  btn.disabled = true;
+
+  appendMsg('user', text);
+  chatHistory.push({ role: 'user', content: text });
+
+  const typingDiv = appendMsg('ai', '…');
+  typingDiv.classList.add('typing');
+
+  try {
+    const res = await fetch(PROXY_BASE + '/deepseek', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'deepseek-v4-pro',
+        system: INS_SYSTEM_PROMPT,
+        messages: chatHistory.slice(-12),
+        max_tokens: 800,
+        temperature: 0.6,
+        _use_env_key: 'DEEPSEEK_API_KEY',
+      })
+    });
+    const data = await res.json();
+    const reply = data?.choices?.[0]?.message?.content
+               || data?.content?.[0]?.text
+               || '죄송합니다, 응답을 받지 못했습니다. 잠시 후 다시 시도해 주세요.';
+    typingDiv.classList.remove('typing');
+    typingDiv.textContent = reply;
+    chatHistory.push({ role: 'assistant', content: reply });
+  } catch (err) {
+    typingDiv.classList.remove('typing');
+    typingDiv.textContent = '네트워크 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.';
+    console.error('[INS Chat]', err);
+  } finally {
+    btn.disabled = false;
+    input.focus();
+  }
+}
+
+document.getElementById('chatInput').addEventListener('input', function() {
+  this.style.height = '';
+  this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+});
+</script>
+
+</body>
+</html>

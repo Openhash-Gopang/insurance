@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>K-Insurance — Gopang AI 보험</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f8f9fa;--sur:#fff;
+  --bd:rgba(0,0,0,.1);--bd2:rgba(0,0,0,.18);
+  --t1:#1c1c1e;--t2:#4a4a55;--t3:#9898a6;
+  --brand:#3ecf8e;--brand-bg:rgba(62,207,142,.08);--brand-bd:rgba(62,207,142,.25);
+  --font:'Noto Sans KR',-apple-system,sans-serif;
+  --r:6px;--r2:10px;
+}
+@media(prefers-color-scheme:dark){
+  :root{--bg:#0f0f0f;--sur:#1c1c1e;--bd:rgba(255,255,255,.1);--bd2:rgba(255,255,255,.2);--t1:#f5f5f7;--t2:#a1a1aa;--t3:#52525b}
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:var(--font);background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased}
+
+/* ── 전체 레이아웃 ── */
+body{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:24px}
+
+/* ── 로고 ── */
+.logo{display:flex;align-items:center;gap:10px;margin-bottom:40px;text-decoration:none}
+.logo-mark{width:44px;height:44px;background:var(--brand);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff}
+.logo-name{font-size:20px;font-weight:500;color:var(--t1);letter-spacing:-.3px}
+
+/* ── 진입 카드 ── */
+.entry-wrap{width:100%;max-width:440px}
+.entry-title{font-size:22px;font-weight:500;color:var(--t1);text-align:center;margin-bottom:6px;letter-spacing:-.3px}
+.entry-sub{font-size:13px;color:var(--t3);text-align:center;margin-bottom:32px;line-height:1.6}
+
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.entry-card{display:flex;flex-direction:column;align-items:flex-start;padding:20px;background:var(--sur);border:.5px solid var(--bd);border-radius:var(--r2);text-decoration:none;color:inherit;transition:border-color .15s,box-shadow .15s;cursor:pointer}
+.entry-card:hover{border-color:var(--brand);box-shadow:0 2px 12px rgba(62,207,142,.12)}
+.entry-card.primary{grid-column:1/-1;flex-direction:row;align-items:center;gap:16px;border-color:var(--brand-bd);background:var(--brand-bg)}
+.entry-card.primary:hover{border-color:var(--brand)}
+.card-icon{width:36px;height:36px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-bottom:12px}
+.entry-card.primary .card-icon{margin-bottom:0;background:var(--brand);color:#fff}
+.card-icon.grey{background:var(--bg);border:.5px solid var(--bd);color:var(--t3)}
+.card-body{flex:1}
+.card-label{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:3px}
+.card-desc{font-size:12px;color:var(--t2);line-height:1.5}
+.card-arrow{margin-left:auto;color:var(--t3);font-size:18px;line-height:1;flex-shrink:0}
+
+/* ── SSO 배지 (로그인 성공 시) ── */
+.auth-status{display:none;align-items:center;gap:8px;font-size:12px;color:var(--t2);background:var(--brand-bg);border:.5px solid var(--brand-bd);border-radius:20px;padding:5px 14px;margin-bottom:20px;justify-content:center}
+.auth-status.visible{display:flex}
+.auth-dot{width:7px;height:7px;border-radius:50%;background:var(--brand);flex-shrink:0}
+
+/* ── 하단 정보 ── */
+.entry-footer{font-size:11px;color:var(--t3);text-align:center;margin-top:24px;line-height:1.8}
+.entry-footer a{color:var(--t3);text-decoration:underline;text-underline-offset:2px}
+.entry-footer a:hover{color:var(--t1)}
+
+/* ── 로딩 스피너 ── */
+.spinner{display:none;width:20px;height:20px;border:2px solid var(--bd2);border-top-color:var(--brand);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── 모바일 분기 안내 ── */
+@media(max-width:480px){
+  .card-grid{grid-template-columns:1fr}
+  .entry-card.primary{flex-direction:column;align-items:flex-start}
+  .entry-card.primary .card-icon{margin-bottom:10px}
+  .card-arrow{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- 인증 레벨 배지 -->
+<span id="auth-badge" style="position:fixed;top:16px;right:16px;font-size:11px;font-weight:600;color:var(--t3);background:var(--sur);border:.5px solid var(--bd);border-radius:20px;padding:3px 10px;cursor:pointer;z-index:200;display:none"></span>
+
+<!-- 로고 -->
+<a href="desktop.html" class="logo">
+  <div class="logo-mark">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:55%;height:55%" aria-hidden="true"><path d="M12 2L3 7l9 5 9-5-9-5z"/><path d="M3 17l9 5 9-5"/><path d="M3 12l9 5 9-5"/></svg>
+  </div>
+  <span class="logo-name">K-Insurance</span>
+</a>
+
+<div class="entry-wrap">
+  <p class="entry-title">어디서 시작할까요?</p>
+  <p class="entry-sub">Gopang AI 보험 — PDV · K-Traffic · K-Health 연동</p>
+
+  <!-- SSO 로그인 성공 시 표시 -->
+  <div class="auth-status" id="authStatus">
+    <span class="auth-dot"></span>
+    <span id="authName">로그인됨</span>
+  </div>
+
+  <div class="card-grid">
+    <!-- 내 보험 (primary) -->
+    <a href="webapp.html" class="entry-card primary">
+      <div class="card-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 12l2 2l4 -4"/><path d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="card-label">내 보험 열기</div>
+        <div class="card-desc">가입 현황, 보험금 청구, PDV 연동 상태 확인</div>
+      </div>
+      <span class="card-arrow">›</span>
+    </a>
+
+    <!-- 서비스 소개 -->
+    <a href="desktop.html" class="entry-card">
+      <div class="card-icon grey">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l-2 0l9 -9l9 9l-2 0"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"/><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"/></svg>
+      </div>
+      <div class="card-label">서비스 소개</div>
+      <div class="card-desc">K-Insurance 소개 및 상품 안내</div>
+    </a>
+
+    <!-- 관리자 대시보드 -->
+    <a href="dashboard.html" class="entry-card">
+      <div class="card-icon grey">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1"/><path d="M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1"/><path d="M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1"/><path d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1"/></svg>
+      </div>
+      <div class="card-label">관리자 대시보드</div>
+      <div class="card-desc">청구 통계·리스크 현황 조회</div>
+    </a>
+  </div>
+
+  <div class="entry-footer">
+    <a href="https://github.com/Openhash-Gopang/insurance" target="_blank" rel="noopener">GitHub 오픈소스</a> ·
+    <a href="https://github.com/Openhash-Gopang/insurance/blob/main/docs/DESIGN.md" target="_blank" rel="noopener">설계 문서</a> ·
+    <a href="https://gopang.net" target="_blank" rel="noopener">고팡</a><br>
+    © 2026 K-Insurance · AI City Inc. · 제주 시범 서비스
+  </div>
+</div>
+
+<!-- ── 인증 로딩 스피너 ── -->
+<div id="auth-loading" style="display:none;position:fixed;inset:0;z-index:9999;
+  background:var(--bg);flex-direction:column;align-items:center;justify-content:center;gap:12px">
+  <div style="width:28px;height:28px;border:3px solid var(--brand-bd);
+    border-top-color:var(--brand);border-radius:50%;animation:spin .7s linear infinite"></div>
+  <div style="font-size:13px;color:var(--t3);font-weight:500">고팡 인증 확인 중…</div>
+</div>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+
+<!-- ── 인증 모달 ── -->
+<div id="auth-modal" style="display:none;position:fixed;inset:0;z-index:9000;
+  background:rgba(0,0,0,.4);align-items:center;justify-content:center;padding:24px"
+  onclick="if(event.target===this)this.classList.remove('open')">
+  <div id="auth-modal-content" style="background:var(--sur);border-radius:16px;
+    width:min(400px,100%);box-shadow:0 20px 60px rgba(0,0,0,.15);padding:28px 24px"></div>
+</div>
+<style>#auth-modal.open{display:flex}</style>
+
+<!-- ── SSO 콜백 + GWP 라우팅 ── -->
+<script>
+// GWP 파라미터 파싱
+var _params  = new URLSearchParams(location.search);
+var _isGwp   = _params.get('gwp') === '1';
+var _hasCtx  = !!_params.get('ctx');
+var _isMobile = /Mobi|Android|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+                || window.innerWidth < 768;
+
+// GWP 호출이면 즉시 webapp으로 (인증은 webapp에서 처리)
+if (_isGwp || (_hasCtx && _isMobile)) {
+  location.replace('webapp.html' + location.search);
+}
+
+window._onGopangAuth = function(user) {
+  if (!user) return;
+
+  // auth-loading 숨김
+  document.getElementById('auth-loading').style.display = 'none';
+
+  // 인증 배지 표시
+  var status = document.getElementById('authStatus');
+  var name   = document.getElementById('authName');
+  var badge  = document.getElementById('auth-badge');
+
+  var displayName = user.name || (user.ipv6 || '').slice(0, 8) || 'Gopang';
+  if (name)   name.textContent = displayName + ' 로그인됨';
+  if (status) status.classList.add('visible');
+  if (badge) {
+    var lvlColor = { L0:'var(--t3)', L1:'#00bcd4', L2:'var(--brand)', L3:'#ff9800' };
+    badge.style.color   = lvlColor[user.level] || lvlColor.L0;
+    badge.textContent   = user.level || 'L0';
+    badge.title         = user.ipv6 || '';
+  }
+
+  // 모바일이면 webapp으로
+  if (_isMobile) location.replace('webapp.html' + location.search);
+};
+</script>
+<script type="module" src="https://gopang.net/auth/subsystem-auth.js"></script>
+</body>
+</html>
