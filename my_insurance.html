@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>내 보험 — K-Insurance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+
+<!-- 외부 CSS (매뉴얼 §2 — gopang-style.css 패턴) -->
+<link rel="stylesheet" href="/kinsurance-style.css">
+</head>
+<body>
+
+<!-- ── 인증 로딩 스피너 ── -->
+<div id="auth-loading" style="display:flex;position:fixed;inset:0;z-index:9999;
+  background:var(--bg);flex-direction:column;align-items:center;justify-content:center;gap:12px">
+  <div style="width:28px;height:28px;border:3px solid var(--brand-bd);
+    border-top-color:var(--brand);border-radius:50%;animation:spin .7s linear infinite"></div>
+  <div style="font-size:13px;color:var(--t3);font-weight:500">고팡 인증 확인 중…</div>
+</div>
+
+<!-- ── 인증 모달 ── -->
+<div id="auth-modal" style="display:none;position:fixed;inset:0;z-index:9000;
+  background:rgba(0,0,0,.4);align-items:center;justify-content:center;padding:24px"
+  onclick="if(event.target===this)this.classList.remove('open')">
+  <div id="auth-modal-content" style="background:var(--sur);border-radius:16px;
+    width:min(400px,100%);box-shadow:0 20px 60px rgba(0,0,0,.15);padding:28px 24px"></div>
+</div>
+
+<!-- ── 앱 전체 래퍼 (인증 전 숨김) ── -->
+<div id="app" style="display:none">
+
+<!-- ── 사이드바 ── -->
+<aside class="sidebar" role="navigation" aria-label="K-Insurance 메뉴">
+  <a href="desktop.html" class="sb-logo">
+    <div class="sb-logo-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:55%;height:55%" aria-hidden="true"><path d="M12 2L3 7l9 5 9-5-9-5z"/><path d="M3 17l9 5 9-5"/><path d="M3 12l9 5 9-5"/></svg>
+    </div>
+    <span class="sb-logo-text">K-Insurance</span>
+  </a>
+
+  <nav class="sb-nav">
+    <a href="desktop.html" class="sb-item">
+      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l-2 0l9 -9l9 9l-2 0"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"/><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"/></svg>
+      <span class="sb-label">서비스 소개</span>
+    </a>
+    <a href="my_insurance.html" class="sb-item active">
+      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 12l2 2l4 -4"/><path d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3"/></svg>
+      <span class="sb-label">내 보험</span>
+    </a>
+    <a href="dashboard.html" class="sb-item">
+      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1"/><path d="M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1"/><path d="M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1"/><path d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1"/></svg>
+      <span class="sb-label">관리자 대시보드</span>
+    </a>
+
+    <div class="sb-sep"></div>
+    <div class="sb-section-label">연동 서비스</div>
+    <a href="https://911.gopang.net" class="sb-item">
+      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 10h16v10a1 1 0 0 1 -1 1h-14a1 1 0 0 1 -1 -1z"/><path d="M4 14h16"/><path d="M12 10v11"/><path d="M4 7m0 1a1 1 0 0 1 1 -1h14a1 1 0 0 1 1 1v2a0 0 0 0 1 0 0h-16a0 0 0 0 1 0 0z"/></svg>
+      <span class="sb-label">K-119</span>
+    </a>
+    <a href="https://health.gopang.net" class="sb-item">
+      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.566"/></svg>
+      <span class="sb-label">K-Health</span>
+    </a>
+    <a href="https://traffic.gopang.net" class="sb-item">
+      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M5 17h-2v-6l2-5h9l4 5h1a2 2 0 0 1 2 2v4h-2m-4 0h-6m-6-6h15m-6 0v-5"/></svg>
+      <span class="sb-label">K-Traffic</span>
+    </a>
+    <a href="https://klaw.gopang.net" class="sb-item">
+      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 4l6 6l-3.5 3.5"/><path d="M6 10l8 -6"/><path d="M10 6l-6 6l7 7l6 -6"/><path d="M4 20l3.5 -3.5"/></svg>
+      <span class="sb-label">K-Law</span>
+    </a>
+    <a href="https://gdc.gopang.net" class="sb-item">
+      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M17 8v-3a1 1 0 0 0 -1 -1h-10a2 2 0 0 0 0 4h12a1 1 0 0 1 1 1v3m0 4v3a1 1 0 0 1 -1 1h-12a2 2 0 0 1 -2 -2v-12"/><path d="M20 12v4h-4a2 2 0 0 1 0 -4h4"/></svg>
+      <span class="sb-label">GDC</span>
+    </a>
+  </nav>
+
+  <div class="sb-bottom">
+    <a href="https://gopang.net" class="sb-item">
+      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0"/><path d="M5 12l6 6"/><path d="M5 12l6 -6"/></svg>
+      <span class="sb-label">고팡으로 돌아가기</span>
+    </a>
+  </div>
+</aside>
+
+<!-- ── NAV ── -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="desktop.html" class="logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:58%;height:58%" aria-hidden="true"><path d="M12 2L3 7l9 5 9-5-9-5z"/><path d="M3 17l9 5 9-5"/><path d="M3 12l9 5 9-5"/></svg>
+      </div>
+      K-Insurance
+    </a>
+    <div class="nav-title">
+      <span class="sep">›</span>
+      <span id="navSub">내 보험</span>
+    </div>
+    <div class="nav-right">
+      <span id="auth-badge" style="font-size:11px;font-weight:600;color:var(--t3);
+        background:var(--bg);border:.5px solid var(--bd);border-radius:20px;
+        padding:3px 10px;cursor:pointer"></span>
+      <a href="desktop.html" class="btn btn-sm">서비스 소개</a>
+      <button class="btn btn-brand btn-sm" onclick="openClaimModal()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14m-7-7h14"/></svg>
+        청구 접수
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ── 메인 ── -->
+<div class="main">
+
+  <!-- 사용자 헤더 -->
+  <div class="user-hd" id="userHd">
+    <div class="user-avatar" id="userInitial">G</div>
+    <div class="user-info">
+      <div class="user-name" id="userName">Gopang 사용자</div>
+      <div class="user-meta">
+        <span id="userGuid" style="font-variant-numeric:tabular-nums">GUID 확인 중…</span>
+        <span class="user-badge"><span class="pulse"></span> PDV 연동 활성</span>
+      </div>
+    </div>
+    <div style="text-align:right;flex-shrink:0">
+      <div style="font-size:11px;color:var(--t3);margin-bottom:2px">이번 달 보험료</div>
+      <div style="font-size:18px;font-weight:500;color:var(--brand)">₮ 2,840</div>
+    </div>
+  </div>
+
+  <!-- 요약 스트립 -->
+  <div class="summary-strip">
+    <div class="sum-cell"><div class="sum-val"><em>3</em>건</div><div class="sum-lbl">가입 보험</div></div>
+    <div class="sum-cell"><div class="sum-val"><em>₮2,840</em></div><div class="sum-lbl">이번 달 총 보험료</div></div>
+    <div class="sum-cell"><div class="sum-val"><em>1</em>건</div><div class="sum-lbl">청구 진행 중</div></div>
+    <div class="sum-cell"><div class="sum-val"><em>97점</em></div><div class="sum-lbl">리스크 점수 (낮을수록 좋음)</div></div>
+  </div>
+
+  <!-- PDV 연동 상태 -->
+  <div class="sec-hd"><h2>PDV 데이터 연동</h2><a href="https://gopang.net" target="_blank" rel="noopener">고팡 PDV 열기 →</a></div>
+  <div class="pdv-bar">
+    <div class="pdv-chip">
+      <div class="pdv-chip-icon pdv">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-8 0a8 8 0 1 0 16 0a8 8 0 1 0 -16 0"/><path d="M9 12l2 2l4 -4"/></svg>
+      </div>
+      <div class="pdv-chip-text">
+        <div class="pdv-chip-name">PDV</div>
+        <div class="pdv-chip-stat">OpenHash 앵커 · 갱신 14분 전</div>
+      </div>
+      <span class="pdv-chip-badge badge-ok">정상</span>
+    </div>
+    <div class="pdv-chip">
+      <div class="pdv-chip-icon traffic">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M5 17h-2v-6l2-5h9l4 5h1a2 2 0 0 1 2 2v4h-2m-4 0h-6m-6-6h15m-6 0v-5"/></svg>
+      </div>
+      <div class="pdv-chip-text">
+        <div class="pdv-chip-name">K-Traffic</div>
+        <div class="pdv-chip-stat">3년 무사고 · 할인 ×0.90 적용 중</div>
+      </div>
+      <span class="pdv-chip-badge badge-ok">정상</span>
+    </div>
+    <div class="pdv-chip">
+      <div class="pdv-chip-icon health">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.566"/></svg>
+      </div>
+      <div class="pdv-chip-text">
+        <div class="pdv-chip-name">K-Health</div>
+        <div class="pdv-chip-stat">최근 진료: 2024-11-03</div>
+      </div>
+      <span class="pdv-chip-badge badge-ok">정상</span>
+    </div>
+  </div>
+
+  <!-- 가입 보험 -->
+  <div class="sec-hd"><h2>가입 보험</h2><a href="desktop.html#products">상품 전체 보기 →</a></div>
+  <div class="policy-list">
+    <div class="policy-card">
+      <div class="policy-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M5 17h-2v-6l2-5h9l4 5h1a2 2 0 0 1 2 2v4h-2m-4 0h-6m-6-6h15m-6 0v-5"/></svg>
+      </div>
+      <div class="policy-info">
+        <div class="policy-name">자동차 보험 (K-Auto)</div>
+        <div class="policy-sub">K-Traffic 전이력 연동 · 3년 무사고 ×0.90 할인 적용</div>
+      </div>
+      <div class="policy-status">
+        <div class="policy-premium">₮1,800 / 월</div>
+        <div class="policy-next">다음 납부 7월 1일</div>
+        <span class="status-chip status-active">활성</span>
+      </div>
+    </div>
+    <div class="policy-card">
+      <div class="policy-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.566"/></svg>
+      </div>
+      <div class="policy-info">
+        <div class="policy-name">건강 보험 (K-Health 실손)</div>
+        <div class="policy-sub">K-Health 생애 이력 연동 · 5년 이상 정기검진 ×0.95 할인</div>
+      </div>
+      <div class="policy-status">
+        <div class="policy-premium">₮940 / 월</div>
+        <div class="policy-next">다음 납부 7월 1일</div>
+        <span class="status-chip status-active">활성</span>
+      </div>
+    </div>
+    <div class="policy-card">
+      <div class="policy-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="9"/></svg>
+      </div>
+      <div class="policy-info">
+        <div class="policy-name">이벤트 자동 보험 (탑승·배달·응급)</div>
+        <div class="policy-sub">K-Traffic / K-Market / K-119 이벤트 감지 시 자동 적용</div>
+      </div>
+      <div class="policy-status">
+        <div class="policy-premium">₮100 / 월 기본</div>
+        <div class="policy-next">이벤트별 GDC 자동 차감</div>
+        <span class="status-chip status-auto">자동</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 보험금 청구 내역 -->
+  <div class="claim-section">
+    <div class="sec-hd"><h2>보험금 청구 내역</h2></div>
+    <button class="claim-new-btn" onclick="openClaimModal()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14m-7-7h14"/></svg>
+      새 청구 접수하기
+    </button>
+    <div class="claim-list">
+      <div class="claim-row">
+        <div class="claim-row-icon auto-ok">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5l10 -10"/></svg>
+        </div>
+        <div class="claim-row-body">
+          <div class="claim-row-title">탑승 보험 자동 청구</div>
+          <div class="claim-row-sub">2026-06-03 · AI 심사 0.3초 · 자동 지급 완료</div>
+        </div>
+        <div class="claim-row-amt">
+          <div class="claim-amt-val" style="color:var(--brand)">₮ 50,000</div>
+          <div class="claim-amt-lbl">지급 완료</div>
+        </div>
+      </div>
+      <div class="claim-row">
+        <div class="claim-row-icon pend">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l2 2"/></svg>
+        </div>
+        <div class="claim-row-body">
+          <div class="claim-row-title">자동차 보험 — 접촉 사고</div>
+          <div class="claim-row-sub">2026-05-28 · K-Traffic 로그 증거 수집 중</div>
+        </div>
+        <div class="claim-row-amt">
+          <div class="claim-amt-val">₮ 320,000</div>
+          <div class="claim-amt-lbl">심사 중</div>
+        </div>
+      </div>
+      <div class="claim-row">
+        <div class="claim-row-icon auto-ok">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5l10 -10"/></svg>
+        </div>
+        <div class="claim-row-body">
+          <div class="claim-row-title">건강 보험 실손 — 외래 진료</div>
+          <div class="claim-row-sub">2026-05-15 · K-Health 자동 청구 · 지급 완료</div>
+        </div>
+        <div class="claim-row-amt">
+          <div class="claim-amt-val" style="color:var(--brand)">₮ 18,500</div>
+          <div class="claim-amt-lbl">지급 완료</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 보험료 할인 요인 -->
+  <div class="sec-hd"><h2>보험료 할인·가산 요인</h2><a href="desktop.html#pdv">PDV 상세 →</a></div>
+  <div class="factor-grid">
+    <div class="factor-cell">
+      <div class="factor-label">K-Traffic 무사고</div>
+      <div class="factor-val pos">×0.90</div>
+      <div class="factor-desc">3년 무사고 할인</div>
+    </div>
+    <div class="factor-cell">
+      <div class="factor-label">K-Health 정기검진</div>
+      <div class="factor-val pos">×0.95</div>
+      <div class="factor-desc">연간 정기검진 완료</div>
+    </div>
+    <div class="factor-cell">
+      <div class="factor-label">PDV 생활 패턴</div>
+      <div class="factor-val neu">×1.00</div>
+      <div class="factor-desc">표준 패턴</div>
+    </div>
+    <div class="factor-cell">
+      <div class="factor-label">심야 운행 빈도</div>
+      <div class="factor-val pos">×0.98</div>
+      <div class="factor-desc">평균 이하</div>
+    </div>
+    <div class="factor-cell">
+      <div class="factor-label">과속·급제동</div>
+      <div class="factor-val pos">×0.97</div>
+      <div class="factor-desc">안전 운전 이력</div>
+    </div>
+    <div class="factor-cell">
+      <div class="factor-label">종합 계수</div>
+      <div class="factor-val pos" style="font-size:18px">×0.84</div>
+      <div class="factor-desc">시중 대비 최대 40%↓</div>
+    </div>
+  </div>
+
+  <!-- 빠른 액션 -->
+  <div class="sec-hd"><h2>빠른 액션</h2></div>
+  <div class="quick-grid">
+    <button class="quick-btn" onclick="openClaimModal()">
+      <div class="quick-icon">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/></svg>
+      </div>
+      보험금 청구
+    </button>
+    <a href="https://traffic.gopang.net" class="quick-btn" target="_blank" rel="noopener">
+      <div class="quick-icon">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M5 17h-2v-6l2-5h9l4 5h1a2 2 0 0 1 2 2v4h-2m-4 0h-6m-6-6h15m-6 0v-5"/></svg>
+      </div>
+      K-Traffic 이력
+    </a>
+    <a href="https://health.gopang.net" class="quick-btn" target="_blank" rel="noopener">
+      <div class="quick-icon">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.566"/></svg>
+      </div>
+      K-Health 이력
+    </a>
+    <button class="quick-btn" onclick="openChat()">
+      <div class="quick-icon">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      AI 상담
+    </button>
+  </div>
+
+</div><!-- /main -->
+
+<!-- ── 청구 모달 ── -->
+<div class="modal-overlay" id="claimOverlay" role="dialog" aria-modal="true" aria-label="보험금 청구 접수">
+  <div class="modal">
+    <div class="modal-hd">
+      <div class="modal-hd-title">보험금 청구 접수</div>
+      <button class="modal-close" onclick="closeClaimModal()" aria-label="닫기">✕</button>
+    </div>
+    <div class="modal-body" id="claimForm">
+      <div class="form-group">
+        <label class="form-label">보험 종류</label>
+        <select class="form-select" id="claimType">
+          <option value="">선택하세요</option>
+          <option>자동차 보험 (K-Auto)</option>
+          <option>건강 보험 실손</option>
+          <option>탑승 보험</option>
+          <option>배달 보험</option>
+          <option>응급 의료 보험</option>
+          <option>거래 사기 보험</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">사고 일시</label>
+        <input class="form-input" type="datetime-local" id="claimDate">
+      </div>
+      <div class="form-group">
+        <label class="form-label">청구 금액 (₮)</label>
+        <input class="form-input" type="number" id="claimAmt" placeholder="예: 50000">
+        <div class="form-hint">₮1,000,000 이상은 Claude Opus 에스컬레이션 심사</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">사고 경위 (선택)</label>
+        <textarea class="form-textarea" id="claimDesc" placeholder="PDV·K-Traffic·K-Health 데이터가 자동 증거로 사용됩니다. 추가 설명이 있을 경우에만 입력하세요."></textarea>
+      </div>
+    </div>
+    <div class="claim-result" id="claimResult">
+      <div class="claim-result-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5l10 -10"/></svg>
+      </div>
+      <div class="claim-result-title">청구 접수 완료</div>
+      <div class="claim-result-sub" id="claimResultMsg">AI 심사가 시작되었습니다.<br>표준 청구는 0.3초 이내 처리됩니다.</div>
+    </div>
+    <div class="modal-foot" id="claimFooter">
+      <button class="btn" onclick="closeClaimModal()">취소</button>
+      <button class="btn btn-brand" onclick="submitClaim()">청구 접수</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── AI 채팅 모달 ── -->
+<div class="chat-modal-overlay" id="chatOverlay" role="dialog" aria-modal="true" aria-label="K-Insurance AI 상담">
+  <div class="chat-modal">
+    <div class="chat-modal-hd">
+      <div class="chat-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:55%;height:55%" aria-hidden="true"><path d="M12 2L3 7l9 5 9-5-9-5z"/><path d="M3 17l9 5 9-5"/><path d="M3 12l9 5 9-5"/></svg>
+      </div>
+      <div>
+        <div class="chat-title-txt">K-Insurance AI 상담</div>
+        <div class="chat-subtitle-txt">DeepSeek V4 Pro · PDV 연동</div>
+      </div>
+      <button class="chat-close-btn" onclick="closeChat()" aria-label="닫기">✕</button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="chat-msg ai">안녕하세요! K-Insurance AI 상담사입니다.<br>귀하의 PDV·K-Traffic·K-Health 데이터를 기반으로 최적의 보험을 안내합니다. 보험 가입·청구·보험금에 관해 무엇이든 질문하세요.</div>
+    </div>
+    <div class="chat-input-row">
+      <textarea class="chat-input" id="chatInput" placeholder="질문을 입력하세요…" rows="1"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat();}"></textarea>
+      <button class="chat-send-btn" id="chatSendBtn" onclick="sendChat()" aria-label="전송">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2z"/></svg>
+      </button>
+    </div>
+    <div class="chat-powered">Powered by DeepSeek V4 Pro · gopang-proxy</div>
+  </div>
+</div>
+
+<!-- ── 플로팅 ── -->
+<div class="float">
+  <button class="float-btn" onclick="openChat()" aria-label="AI 상담 열기">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  </button>
+  <span class="float-label">AI 상담</span>
+</div>
+
+</div><!-- /app -->
+
+<!-- ════════════════════════════════════════════════════════════
+     외부 모듈 로드 — </body> 직전, DOM 완성 후 실행 (매뉴얼 §2-1)
+     순서:
+       1. kinsurance-gwp.js   — GWP 파라미터 파싱 + _onGopangAuth 콜백 정의
+       2. subsystem-auth.js   — 인증 실행 → _onGopangAuth() 호출
+       3. kinsurance-sidebar.js — 사이드바 초기화
+       4. kinsurance-claim.js — 청구 모달 로직
+       5. kinsurance-chat.js  — AI 채팅 (SP 동적 로드 포함)
+     ════════════════════════════════════════════════════════════ -->
+<script src="/src/ins/kinsurance-gwp.js"></script>
+<script type="module" src="https://gopang.net/auth/subsystem-auth.js"></script>
+<script src="/src/ins/kinsurance-sidebar.js"></script>
+<script src="/src/ins/kinsurance-claim.js"></script>
+<script src="/src/ins/kinsurance-chat.js"></script>
+
+</body>
+</html>
