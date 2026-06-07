@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>K-Insurance — Gopang AI 보험 v2.0</title>
+<!-- ── 모바일 진입 가드 — webapp.html로 즉시 전환 ── -->
+<script>
+(function(){
+  var ua = navigator.userAgent;
+  var isMobile = /Mobi|Android|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua)
+              || (window.innerWidth > 0 && window.innerWidth < 768);
+  if (isMobile) location.replace('webapp.html' + location.search);
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">

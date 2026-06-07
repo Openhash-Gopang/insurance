@@ -4,6 +4,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>K-Insurance — Gopang AI 보험</title>
+<!-- ── 디바이스 분기 (인증 대기 없이 즉시 실행) ── -->
+<script>
+(function(){
+  var ua   = navigator.userAgent;
+  var qs   = location.search;
+  var isMobile = /Mobi|Android|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua)
+              || (window.innerWidth > 0 && window.innerWidth < 768);
+  var isGwp = new URLSearchParams(qs).get('gwp') === '1';
+
+  // GWP 직접 호출은 항상 webapp으로
+  if (isGwp) { location.replace('webapp.html' + qs); return; }
+
+  // 디바이스 분기
+  if (isMobile) {
+    location.replace('webapp.html' + qs);
+  } else {
+    location.replace('desktop.html' + qs);
+  }
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -153,17 +173,9 @@ body{display:flex;flex-direction:column;align-items:center;justify-content:cente
 
 <!-- ── SSO 콜백 + GWP 라우팅 ── -->
 <script>
-// GWP 파라미터 파싱
-var _params  = new URLSearchParams(location.search);
-var _isGwp   = _params.get('gwp') === '1';
-var _hasCtx  = !!_params.get('ctx');
-var _isMobile = /Mobi|Android|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
-                || window.innerWidth < 768;
-
-// GWP 호출이면 즉시 webapp으로 (인증은 webapp에서 처리)
-if (_isGwp || (_hasCtx && _isMobile)) {
-  location.replace('webapp.html' + location.search);
-}
+// index.html은 즉시 분기(<head> 스크립트)가 처리함
+// 이 블록은 JS 비활성 환경 폴백용 — 분기 실패 시 수동 선택 UI 유지
+var _params = new URLSearchParams(location.search);
 
 window._onGopangAuth = function(user) {
   if (!user) return;
@@ -181,13 +193,10 @@ window._onGopangAuth = function(user) {
   if (status) status.classList.add('visible');
   if (badge) {
     var lvlColor = { L0:'var(--t3)', L1:'#00bcd4', L2:'var(--brand)', L3:'#ff9800' };
-    badge.style.color   = lvlColor[user.level] || lvlColor.L0;
-    badge.textContent   = user.level || 'L0';
-    badge.title         = user.ipv6 || '';
+    badge.style.color = lvlColor[user.level] || lvlColor.L0;
+    badge.textContent = user.level || 'L0';
+    badge.title       = user.ipv6 || '';
   }
-
-  // 모바일이면 webapp으로
-  if (_isMobile) location.replace('webapp.html' + location.search);
 };
 </script>
 <script type="module" src="https://gopang.net/auth/subsystem-auth.js"></script>
