@@ -1,0 +1,207 @@
+/* ── K-Insurance 디자인 시스템 ── */
+:root{
+  --bg:#f8f9fa;--sur:#fff;
+  --bd:rgba(0,0,0,.1);--bd2:rgba(0,0,0,.18);
+  --t1:#1c1c1e;--t2:#4a4a55;--t3:#9898a6;
+  --brand:#3ecf8e;--brand-bg:rgba(62,207,142,.08);--brand-bd:rgba(62,207,142,.25);
+  --font:'Noto Sans KR',-apple-system,sans-serif;
+  --r:6px;--r2:10px;
+  --sb-w-collapsed:48px;--sb-w-expanded:220px;
+  --sb-bg:#ffffff;--sb-hover:rgba(0,0,0,.05);
+  --sb-active:rgba(62,207,142,.10);--sb-text:#4a4a55;
+  --sb-text-dim:#9898a6;--sb-sep:rgba(0,0,0,.08);
+  --sb-brand:#3ECF8E;
+  --sb-trans:width 220ms cubic-bezier(.4,0,.2,1),box-shadow 220ms cubic-bezier(.4,0,.2,1);
+}
+@media(prefers-color-scheme:dark){
+  :root{--bg:#0f0f0f;--sur:#1c1c1e;--bd:rgba(255,255,255,.1);--bd2:rgba(255,255,255,.2);--t1:#f5f5f7;--t2:#a1a1aa;--t3:#52525b;--sb-bg:#1c1c1e;--sb-hover:rgba(255,255,255,.06);--sb-text:#a1a1aa;--sb-text-dim:#52525b;--sb-sep:rgba(255,255,255,.08)}
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);font-size:14px;color:var(--t1);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.6}
+a{text-decoration:none;color:inherit}
+.ti{line-height:1}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* ── AUTH MODAL ── */
+#auth-modal.open{display:flex}
+
+/* ── NAV ── */
+.nav{background:var(--sur);border-bottom:.5px solid var(--bd);position:sticky;top:0;z-index:100}
+.nav-inner{max-width:1080px;margin:0 auto;padding:0 24px;height:56px;display:flex;align-items:center;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:500;color:var(--t1)}
+.logo-mark{width:28px;height:28px;background:var(--brand);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px}
+.nav-title{flex:1;font-size:14px;color:var(--t2);display:flex;align-items:center;gap:6px}
+.nav-title .sep{color:var(--bd2)}
+.nav-right{display:flex;gap:8px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:var(--r);font-size:13px;font-weight:500;font-family:var(--font);cursor:pointer;border:.5px solid var(--bd2);background:var(--sur);color:var(--t1);transition:all .12s;text-decoration:none}
+.btn:hover{background:var(--bg)}
+.btn-brand{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn-brand:hover{background:#2db87a;border-color:#2db87a}
+.btn-sm{padding:5px 11px;font-size:12px}
+
+/* ── SIDEBAR ── */
+body.has-sidebar{padding-left:var(--sb-w-collapsed)}
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:var(--sb-w-collapsed);background:var(--sb-bg);border-right:1px solid rgba(0,0,0,.09);display:flex;flex-direction:column;z-index:200;overflow:hidden;transition:var(--sb-trans)}
+.sidebar:hover{width:var(--sb-w-expanded);box-shadow:2px 0 20px rgba(0,0,0,.32)}
+.sb-logo{display:flex;align-items:center;gap:10px;padding:0 12px;height:56px;border-bottom:.5px solid var(--sb-sep);flex-shrink:0;overflow:hidden;white-space:nowrap;text-decoration:none}
+.sb-logo-mark{width:24px;height:24px;background:var(--sb-brand);border-radius:5px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:600;flex-shrink:0}
+.sb-logo-text{font-size:13px;font-weight:500;color:var(--sb-text);opacity:0;transition:opacity 160ms ease 30ms}
+.sidebar:hover .sb-logo-text{opacity:1}
+.sb-section-label{padding:14px 14px 3px;font-size:10px;font-weight:500;letter-spacing:.08em;color:var(--sb-text-dim);text-transform:uppercase;white-space:nowrap;opacity:0;transition:opacity 140ms ease}
+.sidebar:hover .sb-section-label{opacity:1}
+.sb-nav{flex:1;overflow:hidden;padding:6px 6px 0;display:flex;flex-direction:column}
+.sb-item{display:flex;align-items:center;gap:10px;padding:0 8px;height:36px;border-radius:6px;color:var(--sb-text);white-space:nowrap;text-decoration:none;cursor:pointer;transition:background 120ms,color 120ms;overflow:hidden;flex-shrink:0}
+.sb-item:hover{background:var(--sb-hover);color:var(--t1)}
+.sb-item.active{background:var(--sb-active);color:#1A6B4A}
+.sb-icon{flex-shrink:0;width:20px;height:20px;display:block}
+.sb-label{font-size:13px;opacity:0;transition:opacity 150ms ease 20ms}
+.sidebar:hover .sb-label{opacity:1}
+.sb-sep{height:.5px;background:var(--sb-sep);margin:6px 0;flex-shrink:0}
+.sb-bottom{padding:6px 6px 12px;border-top:.5px solid var(--sb-sep);display:flex;flex-direction:column;flex-shrink:0}
+@media(max-width:768px){.sidebar{display:none}body.has-sidebar{padding-left:0}}
+
+/* ── 메인 컨테이너 ── */
+.main{max-width:1080px;margin:0 auto;padding:32px 24px 80px}
+
+/* ── 사용자 헤더 ── */
+.user-hd{display:flex;align-items:center;gap:16px;margin-bottom:32px;background:var(--sur);border:.5px solid var(--bd);border-radius:var(--r2);padding:20px 24px}
+.user-avatar{width:48px;height:48px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;font-weight:500;flex-shrink:0}
+.user-info{flex:1}
+.user-name{font-size:16px;font-weight:500;color:var(--t1);margin-bottom:2px}
+.user-meta{font-size:12px;color:var(--t3);display:flex;align-items:center;gap:8px}
+.user-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:2px 8px;border-radius:20px;border:.5px solid var(--brand-bd);color:var(--brand);background:var(--brand-bg)}
+.pulse{width:6px;height:6px;border-radius:50%;background:var(--brand);animation:pulse 2s infinite;display:inline-block}
+
+/* ── 요약 카드 스트립 ── */
+.summary-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--bd);border:.5px solid var(--bd);border-radius:var(--r2);overflow:hidden;margin-bottom:32px}
+@media(max-width:640px){.summary-strip{grid-template-columns:1fr 1fr}}
+.sum-cell{background:var(--sur);padding:18px 20px}
+.sum-val{font-size:20px;font-weight:500;color:var(--t1);margin-bottom:2px}
+.sum-val em{color:var(--brand);font-style:normal}
+.sum-lbl{font-size:11px;color:var(--t3)}
+
+/* ── 섹션 타이틀 ── */
+.sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.sec-hd h2{font-size:15px;font-weight:500;color:var(--t1)}
+.sec-hd a{font-size:12px;color:var(--brand)}
+
+/* ── PDV 연동 상태 ── */
+.pdv-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:32px}
+@media(max-width:640px){.pdv-bar{grid-template-columns:1fr}}
+.pdv-chip{background:var(--sur);border:.5px solid var(--bd);border-radius:var(--r2);padding:16px 18px;display:flex;align-items:center;gap:12px}
+.pdv-chip-icon{width:32px;height:32px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pdv-chip-icon.pdv{background:var(--brand-bg);color:var(--brand)}
+.pdv-chip-icon.traffic{background:rgba(59,130,246,.1);color:#3b82f6}
+.pdv-chip-icon.health{background:rgba(239,68,68,.1);color:#ef4444}
+.pdv-chip-text{flex:1}
+.pdv-chip-name{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:1px}
+.pdv-chip-stat{font-size:11px;color:var(--t3)}
+.pdv-chip-badge{font-size:10px;padding:2px 7px;border-radius:20px;font-weight:500}
+.badge-ok{background:#e6f4ec;color:#1b6b3a;border:.5px solid #a3d9b8}
+.badge-warn{background:#fef9e7;color:#92400e;border:.5px solid #fcd34d}
+
+/* ── 가입 보험 목록 ── */
+.policy-list{display:flex;flex-direction:column;gap:10px;margin-bottom:32px}
+.policy-card{background:var(--sur);border:.5px solid var(--bd);border-radius:var(--r2);padding:18px 20px;display:flex;align-items:center;gap:14px}
+.policy-card:hover{border-color:var(--bd2)}
+.policy-icon{width:36px;height:36px;border:.5px solid var(--bd);border-radius:var(--r);display:flex;align-items:center;justify-content:center;color:var(--t3);flex-shrink:0}
+.policy-info{flex:1}
+.policy-name{font-size:14px;font-weight:500;color:var(--t1);margin-bottom:2px}
+.policy-sub{font-size:12px;color:var(--t3)}
+.policy-status{text-align:right;flex-shrink:0}
+.policy-premium{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:2px;font-variant-numeric:tabular-nums}
+.policy-next{font-size:11px;color:var(--t3)}
+.status-chip{display:inline-flex;align-items:center;gap:3px;font-size:11px;padding:2px 8px;border-radius:20px}
+.status-active{background:#e6f4ec;color:#1b6b3a;border:.5px solid #a3d9b8}
+.status-auto{background:var(--brand-bg);color:var(--brand);border:.5px solid var(--brand-bd)}
+.status-pend{background:#fef9e7;color:#92400e;border:.5px solid #fcd34d}
+
+/* ── 보험금 청구 ── */
+.claim-section{margin-bottom:32px}
+.claim-new-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;border:.5px dashed var(--bd2);border-radius:var(--r2);background:none;font-size:13px;font-weight:500;color:var(--t2);cursor:pointer;font-family:var(--font);transition:all .12s;margin-bottom:12px}
+.claim-new-btn:hover{border-color:var(--brand);color:var(--brand);background:var(--brand-bg)}
+.claim-list{display:flex;flex-direction:column;gap:8px}
+.claim-row{background:var(--sur);border:.5px solid var(--bd);border-radius:var(--r2);padding:14px 18px;display:flex;align-items:center;gap:12px}
+.claim-row-icon{width:28px;height:28px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.claim-row-icon.auto-ok{background:#e6f4ec;color:#1b6b3a}
+.claim-row-icon.pend{background:#fef9e7;color:#92400e}
+.claim-row-icon.review{background:rgba(59,130,246,.1);color:#3b82f6}
+.claim-row-body{flex:1}
+.claim-row-title{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:1px}
+.claim-row-sub{font-size:11px;color:var(--t3)}
+.claim-row-amt{text-align:right;flex-shrink:0}
+.claim-amt-val{font-size:13px;font-weight:500;color:var(--t1);font-variant-numeric:tabular-nums}
+.claim-amt-lbl{font-size:11px;color:var(--t3)}
+
+/* ── 보험료 할인 요인 ── */
+.factor-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:32px}
+@media(max-width:640px){.factor-grid{grid-template-columns:1fr 1fr}}
+.factor-cell{background:var(--sur);border:.5px solid var(--bd);border-radius:var(--r2);padding:14px 16px}
+.factor-label{font-size:11px;color:var(--t3);margin-bottom:6px}
+.factor-val{font-size:15px;font-weight:500}
+.factor-val.pos{color:var(--brand)}
+.factor-val.neg{color:#ef4444}
+.factor-val.neu{color:var(--t1)}
+.factor-desc{font-size:11px;color:var(--t3);margin-top:2px}
+
+/* ── 빠른 액션 ── */
+.quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:32px}
+@media(max-width:640px){.quick-grid{grid-template-columns:repeat(2,1fr)}}
+.quick-btn{background:var(--sur);border:.5px solid var(--bd);border-radius:var(--r2);padding:16px 14px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;text-decoration:none;color:var(--t1);font-size:12px;font-weight:500;transition:border-color .12s,background .12s;text-align:center}
+.quick-btn:hover{border-color:var(--brand);background:var(--brand-bg)}
+.quick-icon{width:32px;height:32px;border-radius:var(--r);background:var(--bg);border:.5px solid var(--bd);display:flex;align-items:center;justify-content:center;color:var(--t3)}
+
+/* ── 청구 모달 ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:400;align-items:center;justify-content:center;padding:24px}
+.modal-overlay.open{display:flex}
+.modal{width:100%;max-width:480px;background:var(--sur);border:.5px solid var(--bd);border-radius:14px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.2)}
+.modal-hd{padding:16px 20px;border-bottom:.5px solid var(--bd);display:flex;align-items:center;gap:10px}
+.modal-hd-title{flex:1;font-size:14px;font-weight:500;color:var(--t1)}
+.modal-close{background:none;border:none;cursor:pointer;color:var(--t3);font-size:18px;padding:4px;border-radius:4px;line-height:1;transition:color .12s}
+.modal-close:hover{color:var(--t1)}
+.modal-body{padding:20px}
+.form-group{margin-bottom:16px}
+.form-label{font-size:12px;font-weight:500;color:var(--t2);margin-bottom:6px;display:block}
+.form-select,.form-input,.form-textarea{width:100%;padding:9px 12px;border:.5px solid var(--bd2);border-radius:var(--r);font-size:13px;font-family:var(--font);color:var(--t1);background:var(--bg);outline:none;transition:border-color .12s}
+.form-select:focus,.form-input:focus,.form-textarea:focus{border-color:var(--brand)}
+.form-textarea{resize:vertical;min-height:72px;line-height:1.5}
+.form-hint{font-size:11px;color:var(--t3);margin-top:4px}
+.modal-foot{padding:14px 20px;border-top:.5px solid var(--bd);display:flex;gap:8px;justify-content:flex-end}
+.claim-result{display:none;padding:20px;text-align:center}
+.claim-result.visible{display:block}
+.claim-result-icon{width:56px;height:56px;border-radius:50%;background:#e6f4ec;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;color:#1b6b3a}
+.claim-result-title{font-size:16px;font-weight:500;color:var(--t1);margin-bottom:6px}
+.claim-result-sub{font-size:13px;color:var(--t2);line-height:1.6}
+
+/* ── AI 채팅 모달 ── */
+.chat-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:300;align-items:flex-end;justify-content:flex-end;padding:84px 24px 24px}
+.chat-modal-overlay.open{display:flex}
+.chat-modal{width:380px;height:560px;background:var(--sur);border:.5px solid var(--bd);border-radius:14px;box-shadow:0 8px 40px rgba(0,0,0,.18);display:flex;flex-direction:column;overflow:hidden}
+@media(max-width:460px){.chat-modal{width:calc(100vw - 32px);height:70dvh}}
+.chat-modal-hd{padding:14px 16px;border-bottom:.5px solid var(--bd);display:flex;align-items:center;gap:10px;flex-shrink:0}
+.chat-logo{width:28px;height:28px;background:var(--brand);border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0}
+.chat-title-txt{flex:1;font-size:13px;font-weight:500;color:var(--t1)}
+.chat-subtitle-txt{font-size:11px;color:var(--t3)}
+.chat-close-btn{background:none;border:none;cursor:pointer;color:var(--t3);font-size:18px;line-height:1;padding:4px;border-radius:4px;transition:color .12s}
+.chat-close-btn:hover{color:var(--t1)}
+.chat-messages{flex:1;overflow-y:auto;padding:14px 14px 8px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth}
+.chat-msg{max-width:88%;font-size:13px;line-height:1.55;padding:9px 12px;border-radius:10px}
+.chat-msg.ai{align-self:flex-start;background:var(--bg);border:.5px solid var(--bd);color:var(--t1);border-bottom-left-radius:3px}
+.chat-msg.user{align-self:flex-end;background:var(--brand);color:#fff;border-bottom-right-radius:3px}
+.chat-msg.typing{color:var(--t3);font-style:italic}
+.chat-input-row{padding:10px 12px;border-top:.5px solid var(--bd);display:flex;gap:8px;align-items:flex-end;flex-shrink:0}
+.chat-input{flex:1;resize:none;border:.5px solid var(--bd2);border-radius:8px;padding:8px 10px;font-size:13px;font-family:var(--font);color:var(--t1);background:var(--bg);line-height:1.45;max-height:100px;outline:none;transition:border-color .12s}
+.chat-input:focus{border-color:var(--brand)}
+.chat-send-btn{width:36px;height:36px;flex-shrink:0;background:var(--brand);border:none;border-radius:8px;cursor:pointer;color:#fff;display:flex;align-items:center;justify-content:center;transition:background .12s}
+.chat-send-btn:hover{background:#2db87a}
+.chat-send-btn:disabled{background:var(--bd2);cursor:not-allowed}
+.chat-powered{text-align:center;font-size:10px;color:var(--t3);padding:4px 0 8px;flex-shrink:0}
+
+/* ── 플로팅 버튼 ── */
+.float{position:fixed;bottom:24px;right:24px;z-index:99;display:flex;flex-direction:column;align-items:center;gap:5px}
+.float-btn{width:48px;height:48px;border-radius:50%;background:var(--brand);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 2px 8px rgba(62,207,142,.35);transition:transform .15s}
+.float-btn:hover{transform:scale(1.06)}
+.float-label{font-size:10px;color:var(--t3)}
