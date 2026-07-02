@@ -213,7 +213,7 @@ JSON만 반환: { "approvedAmount": 숫자, "reason": "사유", "confidence": 0~
 // ──────────────────────────────────────────
 async function callKLaw({ claim, evidence }) {
   try {
-    const res = await fetch('https://klaw.gopang.net/api/analyze', {
+    const res = await fetch('https://klaw.hondi.net/api/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -252,7 +252,7 @@ async function payoutGdc(claimNo, userIpv6, amountGdc) {
         amount: amountGdc,
         memo: `K-Insurance 보험금 (${claimNo})`,
       }
-    }, 'https://gopang.net');
+    }, 'https://hondi.net');
   }
 
   console.log(`[ins-claim] 보험금 지급 완료: ₮${amountGdc} → ${userIpv6}`);
@@ -264,7 +264,7 @@ async function payoutGdc(claimNo, userIpv6, amountGdc) {
 // ──────────────────────────────────────────
 async function notifyKPolice(claim, fraudResult) {
   try {
-    const res = await fetch('https://police.gopang.net/api/report', {
+    const res = await fetch('https://police.hondi.net/api/report', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -287,7 +287,7 @@ async function notifyKPolice(claim, fraudResult) {
 // ──────────────────────────────────────────
 async function anchorClaimToOpenHash(claimNo, status) {
   try {
-    await fetch('https://openhash.gopang.net/anchor', {
+    await fetch('https://openhash.hondi.net/anchor', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ type: 'INS_CLAIM', ref: claimNo, status, timestamp: new Date().toISOString() }),

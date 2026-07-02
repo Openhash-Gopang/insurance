@@ -566,7 +566,7 @@ msgInput.addEventListener('input', function() { autoResize(this); updateSendBtn(
 
 /* ── GWP 파라미터 파싱 (매뉴얼 §6-4) ── */
 var _params     = new URLSearchParams(location.search);
-var _gwpOrigin  = _params.get('origin') || 'https://gopang.net';
+var _gwpOrigin  = _params.get('origin') || 'https://hondi.net';
 var _gwpContext = null;
 try {
   var _ctxRaw = _params.get('ctx') || '';
@@ -603,7 +603,7 @@ window._onGopangAuth = function(user) {
 };
 </script>
 
-<script type="module" src="https://gopang.net/auth/subsystem-auth.js"></script>
+<script type="module" src="https://hondi.net/auth/subsystem-auth.js"></script>
 </body>
 </html>
 

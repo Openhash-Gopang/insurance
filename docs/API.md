@@ -1,8 +1,8 @@
 # K-Insurance API 명세 v1.0
-## insurance.gopang.net REST API
+## insurance.hondi.net REST API
 
-Base URL: `https://insurance.gopang.net/api`  
-인증: gopang.net SSO (subsystem-auth.js) — `user.ipv6` JWT
+Base URL: `https://insurance.hondi.net/api`  
+인증: hondi.net SSO (subsystem-auth.js) — `user.ipv6` JWT
 
 ---
 

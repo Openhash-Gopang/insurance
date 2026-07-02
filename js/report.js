@@ -2,7 +2,7 @@
 // K-Insurance report.js  v1.0
 // PDV 조회 → DeepSeek V4 Pro 보험료 산출 → PDV 기록 파이프라인
 //
-// 배포 위치: insurance.gopang.net/js/report.js
+// 배포 위치: insurance.hondi.net/js/report.js
 // 의존성:
 //   - gopang-proxy (gopang-proxy.tensor-city.workers.dev)
 //   - subsystem-auth.js (user.ipv6, user.level, user.exp)
@@ -16,7 +16,7 @@
 
 const PROXY    = 'https://gopang-proxy.tensor-city.workers.dev';
 const SVC_ID   = 'kinsurance';
-const SVC_URL  = 'https://insurance.gopang.net';
+const SVC_URL  = 'https://insurance.hondi.net';
 const SUPA_URL = 'https://ebbecjfrwaswbdybbgiu.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImViYmVjamZyd2Fzd2JkeWJiZ2l1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1NjE5ODQsImV4cCI6MjA5NTEzNzk4NH0.H2ahQKtWdSke04Pdi3hDY86pdTx7UUKPUpQMlS_zciA';
 const HDR      = { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY,
@@ -190,7 +190,7 @@ async function waitForConsent(consentInfo, onConsentRequired) {
     }, Math.min(timeLeft, 300_000));
 
     function onMsg(e) {
-      if (e.origin !== 'https://gopang.net') return;
+      if (e.origin !== 'https://hondi.net') return;
       if (e.data?.type !== 'GOPANG_CONSENT_RESULT') return;
       clearTimeout(timeout);
       window.removeEventListener('message', onMsg);

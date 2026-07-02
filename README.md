@@ -2,7 +2,7 @@
 ## 종래의 보험을 대체하는 AI 쌍둥이 v1.0
 
 > **저장소:** `Openhash-Gopang/insurance`  
-> **도메인:** `insurance.gopang.net`  
+> **도메인:** `insurance.hondi.net`  
 > **운영:** AI City Inc. / OpenHash Network  
 > **최초 서비스:** 2026년 (제주 시범)  
 > **법적 성격:** 고팡 플랫폼 내 상황 기반 자동 보험 Agent
@@ -81,7 +81,7 @@ insurance/
 ├── api/
 │   └── ins-proxy.js            ← Cloudflare Worker (외부 데이터 프록시)
 │
-├── CNAME                       ← insurance.gopang.net
+├── CNAME                       ← insurance.hondi.net
 └── docs/
     ├── DESIGN.md               ← 상세 설계
     ├── WHITEPAPER.md           ← K-Insurance 백서
@@ -190,4 +190,4 @@ AI 심사 (ins-risk.js) → 0.3초
 ---
 
 *K-Insurance v1.0 — AI City Inc. / OpenHash Network*  
-*gopang.net 하위 시스템 | 제주 시범 운영 2026*
+*hondi.net 하위 시스템 | 제주 시범 운영 2026*

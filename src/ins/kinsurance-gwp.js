@@ -7,7 +7,7 @@
 /* [FIX-4] 매뉴얼 §6-4 표준 ctx 파싱 패턴 */
 var _params     = new URLSearchParams(location.search);
 var _isGwp      = _params.get('gwp') === '1';
-var _gwpOrigin  = _params.get('origin') || 'https://gopang.net';
+var _gwpOrigin  = _params.get('origin') || 'https://hondi.net';
 var _gwpContext = null;
 
 try {

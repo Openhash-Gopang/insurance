@@ -1,14 +1,14 @@
 /**
  * ins-proxy.js — K-Insurance Cloudflare Worker v1.0
  * 외부 데이터 프록시 + CORS 처리
- * 배포: Cloudflare Workers (insurance.gopang.net/api/*)
+ * 배포: Cloudflare Workers (insurance.hondi.net/api/*)
  */
 
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const corsHeaders = {
-      'Access-Control-Allow-Origin': 'https://insurance.gopang.net',
+      'Access-Control-Allow-Origin': 'https://insurance.hondi.net',
       'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     };
@@ -62,7 +62,7 @@ async function getRiskData(request, env, corsHeaders) {
 async function anchorToOpenHash(request, env, corsHeaders) {
   const body = await request.json();
 
-  const res = await fetch('https://openhash.gopang.net/anchor', {
+  const res = await fetch('https://openhash.hondi.net/anchor', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -135,7 +135,7 @@ async function checkOpenHashAnchor(openhashRef, pdvRecord) {
   if (!openhashRef) return 0;
 
   try {
-    const res = await fetch(`https://openhash.gopang.net/verify/${openhashRef}`);
+    const res = await fetch(`https://openhash.hondi.net/verify/${openhashRef}`);
     const { valid, mismatch } = await res.json();
     if (!valid || mismatch) return 0.9;  // 위변조 감지: 매우 높음
     return 0;

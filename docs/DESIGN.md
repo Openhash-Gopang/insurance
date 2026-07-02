@@ -1,5 +1,5 @@
 # K-Insurance 상세 설계 v1.0
-## insurance.gopang.net — AI 보험 Agent 설계 문서
+## insurance.hondi.net — AI 보험 Agent 설계 문서
 
 ---
 
@@ -32,8 +32,8 @@ K-Insurance는 종래의 보험회사를 AI로 완전 대체한다. 설계의 �
 
 ### 탑승 보험 (AUTO_RIDE)
 ```
-트리거: K-Traffic이 gopang.net에 RIDE_START 이벤트 전송
-         → gopang.net이 GWP 프로토콜로 insurance.gopang.net에 전달
+트리거: K-Traffic이 hondi.net에 RIDE_START 이벤트 전송
+         → hondi.net이 GWP 프로토콜로 insurance.hondi.net에 전달
 처리:   ins-auto.js handleAutoTrigger()
 보험료: ₮0.5 기준 × 리스크 조정계수
 보장:   탑승 시작~하차 완료 + 30분 여유
@@ -80,7 +80,7 @@ approved ──► GDC 자동 지급 ──► paid
 배상 책임 청구 시 K-Law v15.1 판결 방법론을 호출한다.
 
 ```
-K-Insurance → klaw.gopang.net/api/analyze
+K-Insurance → klaw.hondi.net/api/analyze
   입력:
     - caseType: LIABILITY
     - 사고 경위 (PDV 기록)
@@ -106,10 +106,10 @@ K-Law 분석 없이 배상 책임 결론 제시 불가 (강제규칙 6).
 
 ```
 보험료 납부:
-  ins-auto.js → window.opener.postMessage(GDC_DEDUCT) → gopang.net → gdc.gopang.net
+  ins-auto.js → window.opener.postMessage(GDC_DEDUCT) → hondi.net → gdc.hondi.net
 
 보험금 지급:
-  ins-claim.js payoutGdc() → window.opener.postMessage(GDC_CREDIT) → gopang.net → gdc.gopang.net
+  ins-claim.js payoutGdc() → window.opener.postMessage(GDC_CREDIT) → hondi.net → gdc.hondi.net
   + ins_payouts 원장 기록
   + OpenHash 앵커링
 ```
@@ -126,7 +126,7 @@ GDC BIVM Σδ=0 원칙에 의해 보험료 합계 = 보험금 + 운영비 + 준�
   "type":  "policy | claim | payout",
   "who":   { "ipv6": "사용자 GUID", "role": "user", "level": "L0" },
   "when":  { "period_start": "ISO8601", "period_end": "ISO8601" },
-  "where": { "svc_url": "https://insurance.gopang.net", "trigger": "K-Traffic:RIDE_START" },
+  "where": { "svc_url": "https://insurance.hondi.net", "trigger": "K-Traffic:RIDE_START" },
   "what":  { "summary": "탑승 보험 자동 적용, ₮0.5 납부" },
   "how":   { "method": "ins-auto.js 이벤트 트리거" },
   "why":   { "goal": "이동 리스크 자동 보장" }

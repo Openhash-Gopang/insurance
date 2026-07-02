@@ -1,7 +1,7 @@
 /**
  * ins-auto.js — K-Insurance 자동 보험 트리거 엔진 v1.0
  * 이벤트 트리거 자동 보험 적용 (탑승·배달·응급·거래)
- * GWP 프로토콜 연동 (gopang.net ↔ Agent 통신)
+ * GWP 프로토콜 연동 (hondi.net ↔ Agent 통신)
  */
 
 import { createPolicy, generatePolicyNo } from './ins-core.js';
@@ -20,10 +20,10 @@ const AUTO_TRIGGER_MAP = {
 
 // ──────────────────────────────────────────
 // GWP 이벤트 수신 리스너
-// gopang.net에서 postMessage로 이벤트 전달
+// hondi.net에서 postMessage로 이벤트 전달
 // ──────────────────────────────────────────
 window.addEventListener('message', async (e) => {
-  if (e.origin !== 'https://gopang.net') return;
+  if (e.origin !== 'https://hondi.net') return;
   const { type, payload } = e.data || {};
   if (type !== 'INS_AUTO_TRIGGER') return;
   await handleAutoTrigger(payload);
@@ -115,7 +115,7 @@ function buildPdvRecord({ agent, event, user, context }) {
     type:  'auto_policy',
     who:   { ipv6: user.ipv6, role: 'user', level: user.level || 'L0' },
     when:  { period_start: new Date().toISOString() },
-    where: { svc_url: `https://insurance.gopang.net`, trigger: `${agent}:${event}` },
+    where: { svc_url: `https://insurance.hondi.net`, trigger: `${agent}:${event}` },
     what:  { summary: `자동 보험 적용 (${agent} ${event})` },
     how:   { method: 'ins-auto.js 이벤트 트리거' },
     why:   { goal: '이동·거래·응급 리스크 자동 보장' },
@@ -135,7 +135,7 @@ async function deductPremiumGdc(userIpv6, premiumGdc, policyNo) {
         amount: premiumGdc,
         memo: `K-Insurance 보험료 (${policyNo})`,
       }
-    }, 'https://gopang.net');
+    }, 'https://hondi.net');
   }
   // 실패해도 보험은 유효 (소액이므로 사후 정산 허용)
 }
@@ -156,7 +156,7 @@ function notifyUser(userIpv6, policy) {
   };
   // gopang 포털로 알림 전달
   if (window.opener) {
-    window.opener.postMessage(msg, 'https://gopang.net');
+    window.opener.postMessage(msg, 'https://hondi.net');
   }
 }
 
@@ -165,7 +165,7 @@ function notifyUser(userIpv6, policy) {
 // ──────────────────────────────────────────
 async function anchorToOpenHash(policy) {
   try {
-    const res = await fetch('https://openhash.gopang.net/anchor', {
+    const res = await fetch('https://openhash.hondi.net/anchor', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

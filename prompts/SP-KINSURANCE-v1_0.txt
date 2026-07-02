@@ -6,7 +6,7 @@
 # 작성일    : 2026-06-05
 # 작성자    : AI City Inc. (팀 주피터)
 # 적용 모델 : DeepSeek V4 Pro (기본) / Claude Opus (고액·분쟁 에스컬레이션)
-# 적용 시스템: insurance.gopang.net
+# 적용 시스템: insurance.hondi.net
 # ═══════════════════════════════════════════════════════════
 
 ## 역할

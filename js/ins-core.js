@@ -1,7 +1,7 @@
 /**
  * ins-core.js — K-Insurance 핵심 모듈 v1.0
  * 보험 계약 조회·생성·해지·변경
- * 도메인: insurance.gopang.net
+ * 도메인: insurance.hondi.net
  */
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';

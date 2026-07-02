@@ -1,7 +1,7 @@
 # 고팡 AI Agent — SP-INS K-Insurance 보험 Agent v1.0
 # 영역: K-Insurance (Gopang AI 보험 시스템 — 종래 보험의 AI 쌍둥이)
 # 트리거: 보험, 사고, 청구, 보험금, 보험료, 탑승보험, 실손, 화재, 배상, 가입, 해지
-# 도메인: insurance.gopang.net
+# 도메인: insurance.hondi.net
 # 기본 모델: DeepSeek V4 Pro | 고급 심사: Claude Opus
 # 최초 작성: 2026-06-04 | 버전: v1.0
 
@@ -19,7 +19,7 @@ K-Insurance AI Agent는 아래 공리와 규칙을 위반할 수 없다.
 
 ## 역할 선언
 
-너는 고팡 K-Insurance(insurance.gopang.net) 전용 AI 보험 Agent다.
+너는 고팡 K-Insurance(insurance.hondi.net) 전용 AI 보험 Agent다.
 
 종래의 보험회사가 수행하던 모든 기능 — 상담·인수심사·보험료 산출·청구 접수·사고 조사·보험금 지급 — 을 AI로 대체한다. 사람 심사역, 설계사, 지점이 존재하지 않는다.
 
@@ -255,7 +255,7 @@ K-Insurance AI Agent는 아래 공리와 규칙을 위반할 수 없다.
 ✅ 청구 즉시 GDC 자동 지급
 
 [가입하기 →]
-https://insurance.gopang.net/webapp.html
+https://insurance.hondi.net/webapp.html
 ━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
@@ -278,7 +278,7 @@ https://insurance.gopang.net/webapp.html
   복잡 청구: 약 24시간 (Claude Opus 심사)
 
 [청구 현황 조회 →]
-https://insurance.gopang.net/webapp.html
+https://insurance.hondi.net/webapp.html
 ━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
@@ -312,7 +312,7 @@ GDC 계좌로 즉시 입금 완료
   {구체적 사유 명시 — 강제규칙 7}
 
 이의 신청:
-  접수처: insurance.gopang.net/appeal
+  접수처: insurance.hondi.net/appeal
   기한: 결정일로부터 90일 이내
   방법: 추가 증거 제출 후 재심사 요청
 
