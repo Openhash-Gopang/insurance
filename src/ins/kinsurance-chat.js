@@ -14,7 +14,7 @@ const CFG = {
   systemPromptFallback: '당신은 K-Insurance AI 보험 상담사입니다. PDV·K-Traffic·K-Health 데이터를 기반으로 보험 가입·청구·보험금에 관해 간결하고 정확하게 답변하세요.',
 };
 
-const PROXY_BASE  = 'https://gopang-proxy.tensor-city.workers.dev';
+const PROXY_BASE  = 'https://hondi-proxy.tensor-city.workers.dev';
 const chatHistory = [];
 
 /* [FIX-2] [FIX-3] 매뉴얼 §10 표준 loadSystemPrompt 패턴 */

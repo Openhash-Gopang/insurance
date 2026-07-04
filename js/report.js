@@ -4,7 +4,7 @@
 //
 // 배포 위치: insurance.hondi.net/js/report.js
 // 의존성:
-//   - gopang-proxy (gopang-proxy.tensor-city.workers.dev)
+//   - gopang-proxy (hondi-proxy.tensor-city.workers.dev)
 //   - subsystem-auth.js (user.ipv6, user.level, user.exp)
 //   - Supabase (ebbecjfrwaswbdybbgiu.supabase.co)
 //
@@ -14,7 +14,7 @@
 //   - SP-KINSURANCE-v1_0.txt      : 보험료 산출 시스템 프롬프트
 // ═══════════════════════════════════════════════════════════
 
-const PROXY    = 'https://gopang-proxy.tensor-city.workers.dev';
+const PROXY    = 'https://hondi-proxy.tensor-city.workers.dev';
 const SVC_ID   = 'kinsurance';
 const SVC_URL  = 'https://insurance.hondi.net';
 const SUPA_URL = 'https://ebbecjfrwaswbdybbgiu.supabase.co';
