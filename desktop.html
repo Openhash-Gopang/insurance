@@ -1122,6 +1122,7 @@ async function sendChat() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model: 'deepseek-v4-pro',
+        service_id: 'kinsurance', // 2026-07-05: UNIVERSAL 레이어 강제 주입
         system: INS_SYSTEM_PROMPT,
         messages: chatHistory.slice(-12),
         max_tokens: 800,
