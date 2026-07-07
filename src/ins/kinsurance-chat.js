@@ -86,6 +86,7 @@ async function sendChat() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model:        'deepseek-v4-pro',
+        service_id:   'kinsurance', // 2026-07-07: worker.js가 UNIVERSAL-INTEGRITY/UNIVERSAL-common 강제 주입
         system:       sp,
         messages:     chatHistory.slice(-12),
         max_tokens:   800,
