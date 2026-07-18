@@ -27,6 +27,11 @@ try {
 window._onGopangAuth = function (user) {
   if (!user) return;
 
+  // 2026-07-18: submitClaim()이 실제 청구 기록을 남기려면 인증된 사용자
+  // 정보가 필요한데, 이전엔 여기서 DOM 렌더링에만 쓰고 버려졌다 —
+  // 전역에 보존한다.
+  window._insUser = user;
+
   /* 앱 표시 + 스피너 제거 */
   document.getElementById('auth-loading').style.display = 'none';
   document.getElementById('app').style.display          = 'block';
