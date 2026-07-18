@@ -426,12 +426,16 @@
 <!-- ════════════════════════════════════════════════════════════
      외부 모듈 로드 — </body> 직전, DOM 완성 후 실행 (매뉴얼 §2-1)
      순서:
+       0. gopang-wallet.js    — 지갑(Ed25519 서명) — POST /biz/ins-claim,
+          GET /biz/ins-claims가 본인 서명 인증을 요구하므로 필수
+          (2026-07-18 신설, HONDI_GAP_REMEDIATION_DIRECTIVE v1.0 §2.1)
        1. kinsurance-gwp.js   — GWP 파라미터 파싱 + _onGopangAuth 콜백 정의
        2. subsystem-auth.js   — 인증 실행 → _onGopangAuth() 호출
        3. kinsurance-sidebar.js — 사이드바 초기화
        4. kinsurance-claim.js — 청구 모달 로직
        5. kinsurance-chat.js  — AI 채팅 (SP 동적 로드 포함)
      ════════════════════════════════════════════════════════════ -->
+<script src="/gopang-wallet.js"></script>
 <script src="/src/ins/kinsurance-gwp.js"></script>
 <script type="module" src="https://hondi.net/auth/subsystem-auth.js"></script>
 <script src="/src/ins/kinsurance-sidebar.js"></script>
