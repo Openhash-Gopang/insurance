@@ -1,6 +1,9 @@
 # K-Insurance 상세 설계 v1.0
 ## insurance.hondi.net — AI 보험 Agent 설계 문서
 
+> ⚠️ **이 문서는 v1.0 초안이며, 2026-07-26 [`PDV_INSURANCE_SYSTEM_DESIGN_v2_0.md`](./PDV_INSURANCE_SYSTEM_DESIGN_v2_0.md)로 대체되었습니다.**
+> 아래 "No 심사역", "AI가 0.3초 안에 지급 결정" 같은 서술은 실제 구현과 맞지 않고(현재는 담당자 검토 방식), 법적·윤리적 검토 없이 작성된 초기 비전 문서입니다. 특히 §7의 건강 데이터 기반 계수 설계는 v2.0 §4.3의 가족력·개인 건강정보 게이트 원칙과 충돌하므로 그대로 구현하지 마십시오. 새로 작업할 때는 v2.0과, 그 실행 아키텍처를 다루는 [`PDV_SANDBOX_EXECUTION_DESIGN_v1_0.md`](./PDV_SANDBOX_EXECUTION_DESIGN_v1_0.md) · [`PDV_SANDBOX_SCHEMA_v1_0.md`](./PDV_SANDBOX_SCHEMA_v1_0.md)를 참고하십시오. 이 문서는 과거 비전의 기록으로만 남겨둡니다.
+
 ---
 
 ## 1. 설계 철학
