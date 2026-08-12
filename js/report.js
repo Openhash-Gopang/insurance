@@ -6,7 +6,7 @@
 // 의존성:
 //   - gopang-proxy (hondi-proxy.tensor-city.workers.dev)
 //   - subsystem-auth.js (user.ipv6, user.level, user.exp)
-//   - Supabase (ebbecjfrwaswbdybbgiu.supabase.co)
+//   - PocketBase(insurance_calc_results, hondi-proxy 경유) — 2026-08-12 Supabase에서 이관
 //
 // 참조 문서:
 //   - PDV_QUERY_PROTOCOL_v1_0.md  : /pdv/query 프로토콜
@@ -17,10 +17,10 @@
 const PROXY    = 'https://hondi-proxy.tensor-city.workers.dev';
 const SVC_ID   = 'kinsurance';
 const SVC_URL  = 'https://insurance.hondi.net';
-const SUPA_URL = '' /* -2026-08-12 secret removed, see README_SECRETS_INCIDENT.md */;
-const SUPA_KEY = '' /* -2026-08-12 secret removed, rotate + migrate to PocketBase, see README_SECRETS_INCIDENT.md */;
-const HDR      = { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY,
-                   'Content-Type': 'application/json' };
+// ★2026-08-12 — Supabase 직접 호출 제거, hondi-proxy(/insurance/calc-results)
+// 경유로 전환 완료. PocketBase(insurance_calc_results)가 실제 저장소이며
+// worker.js의 handleInsuranceCalcLatest/Save가 대신 접근한다.
+// README_SECRETS_INCIDENT.md 참조.
 
 // 기본 조회 scope (보험료 산출에 필요한 최소 집합)
 const DEFAULT_SCOPE = ['ktraffic', 'khealth', 'pdv_general'];
@@ -104,13 +104,10 @@ async function getLatestPremium(user) {
   if (!user?.ipv6) return null;
   try {
     const res = await fetch(
-      SUPA_URL + `/rest/v1/insurance_calc_results`
-      + `?user_guid=eq.${encodeURIComponent(user.ipv6)}`
-      + `&order=calc_at.desc&limit=1&select=*`,
-      { headers: HDR }
+      `${PROXY}/insurance/calc-results?guid=${encodeURIComponent(user.ipv6)}`
     );
-    const rows = await res.json().catch(() => []);
-    return rows?.[0] || null;
+    const data = await res.json().catch(() => ({ items: [] }));
+    return data.items?.[0] || null;
   } catch (e) {
     console.warn('[INS] 최근 산출 결과 조회 실패:', e.message);
     return null;
@@ -353,9 +350,9 @@ async function sendPdvReport(user, period, calcResult) {
 
 async function saveCalcResult(user, period, calcResult, pdvEntryId) {
   try {
-    const res = await fetch(SUPA_URL + '/rest/v1/insurance_calc_results', {
+    const res = await fetch(`${PROXY}/insurance/calc-results`, {
       method:  'POST',
-      headers: { ...HDR, 'Prefer': 'return=minimal' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         calc_id:       calcResult.calc_id,
         user_guid:     user.ipv6,
@@ -363,7 +360,7 @@ async function saveCalcResult(user, period, calcResult, pdvEntryId) {
         period_end:    period.end,
         monthly_total: calcResult.monthly_total,
         risk_profile:  calcResult.summary?.risk_profile,
-        calc_data:     calcResult,         // 원본 전체 (jsonb)
+        calc_data:     calcResult,         // 원본 전체 (json)
         pdv_entry_id:  pdvEntryId,
         model:         calcResult.model || 'deepseek-v4-pro',
         calc_at:       calcResult.calc_at || new Date().toISOString(),
@@ -371,10 +368,10 @@ async function saveCalcResult(user, period, calcResult, pdvEntryId) {
     });
     if (!res.ok) {
       const errText = await res.text().catch(() => '');
-      console.warn('[INS] Supabase 저장 실패:', res.status, errText);
+      console.warn('[INS] PocketBase 저장 실패:', res.status, errText);
     }
   } catch (e) {
-    console.warn('[INS] Supabase 저장 예외:', e.message);
+    console.warn('[INS] PocketBase 저장 예외:', e.message);
   }
 }
 
@@ -393,13 +390,11 @@ async function initPremiumScheduler(user, opts = {}) {
     // 이번 달 기존 결과 확인
     const period = _currentMonthPeriod();
     const res = await fetch(
-      SUPA_URL + `/rest/v1/insurance_calc_results`
-      + `?user_guid=eq.${encodeURIComponent(user.ipv6)}`
-      + `&period_start=eq.${period.start}`
-      + `&select=calc_id,monthly_total,risk_profile`,
-      { headers: HDR }
+      `${PROXY}/insurance/calc-results?guid=${encodeURIComponent(user.ipv6)}`
+      + `&period_start=${encodeURIComponent(period.start)}`
     );
-    const rows = await res.json().catch(() => []);
+    const data = await res.json().catch(() => ({ items: [] }));
+    const rows = data.items || [];
 
     if (rows?.length > 0) {
       // 이미 이번 달 결과 있음
